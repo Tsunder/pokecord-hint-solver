@@ -70,7 +70,7 @@ function check (text,guildId) {
 	var joiner = guildId == HOMEGUILD ? `${HOMECATCHFIX} `:``;
 	var out = validmons.slice(0,4)
 
-	out.forEach(line => {response.push(`${joiner} ${line}`)})
+	out.forEach(line => {response.push(`${joiner}${line}`)})
 	if (validmons.length > 4) {
 		response.push(`Showing first 4/${validmons.length} matches.`)
 	}

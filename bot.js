@@ -15,8 +15,8 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_
 client.on('messageCreate', async message => {
 	if ( message.author.id == POKETWO_ID || DEBUG) {
 		if ( message.content.startsWith(HINTSTART) ) {
-			var text = check(message.content,message.guild.id)
-			message.channel.send(text)
+			var texts = check(message.content,message.guild.id)
+			texts.forEach(text => {message.channel.send(text)})
 			}
 		}
 	let args;
@@ -45,7 +45,7 @@ client.once( 'ready', () => { //run getpage on a timed loop, if fail then logirt
 	console.log("poke hint solver bot ready");
 });
 
-//returns a string
+//returns an array of string
 function check (text,guildId) {
 	text = text.substring(15,text.length-1)
 	//replacing _ for regex
@@ -61,9 +61,12 @@ function check (text,guildId) {
 		validmons = POKEMONLIST[text.length].filter((mon) => {return mon.match(reg)})
 	}
 	
+	var response = []
 	if (validmons.length == 0) {
-		return "Sorry! Hint parser failed!"
+		response.push("Sorry! Hint parser failed!")
+		return response
 	}
+
 	var joiner = guildId == HOMEGUILD ? `\n${HOMECATCHFIX} `:`\n`;
 	if (validmons.length > 20 ) {
 		var out = validmons.slice(0,10).join(joiner)
@@ -73,7 +76,10 @@ function check (text,guildId) {
 		var out = validmons.join(joiner)
 		return `${joiner}${out}`
 	}
-	return "Error really badly."
+	if (response.length == 0) {
+		reseponse.push("Error'd really badly")
+	}
+	return response
 }
 
 client.login(token)

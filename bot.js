@@ -63,21 +63,19 @@ function check (text,guildId) {
 	
 	var response = []
 	if (validmons.length == 0) {
-		response.push("Sorry! Hint parser failed!")
+		response.push("No matches found!")
 		return response
 	}
 
-	var joiner = guildId == HOMEGUILD ? `\n${HOMECATCHFIX} `:`\n`;
-	if (validmons.length > 10 ) {
-		var out = validmons.slice(0,10).join(joiner)
-		return `${joiner}${out}\nShowing first 10/${validmons.length} matches.`
-	}
-	else  {
-		var out = validmons.join(joiner)
-		return `${joiner}${out}`
+	var joiner = guildId == HOMEGUILD ? `${HOMECATCHFIX} `:``;
+	var out = validmons.slice(0,5)
+
+	out.forEach(line => {reseponse.push(`${joiner} ${line}`)})
+	if (validmons.length > 5) {
+		response.push(`Showing first 5/${validmons.length} matches.`)
 	}
 	if (response.length == 0) {
-		reseponse.push("Error'd really badly")
+		reseponse.push("Error'd really badly.")
 	}
 	return response
 }

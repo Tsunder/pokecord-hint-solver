@@ -59,6 +59,7 @@ function check (text,guildId) {
 		}
 		reg = new RegExp(text.replace(/\\_/g,"."))
 		validmons = POKEMONLIST[text.length].filter((mon) => {return mon.match(reg)})
+		if(DEBUG) {console.log(validmons)};
 	}
 	
 	var response = []
@@ -68,14 +69,14 @@ function check (text,guildId) {
 	}
 
 	var joiner = guildId == HOMEGUILD ? `${HOMECATCHFIX} `:``;
-	var out = validmons.slice(0,5)
+	var out = validmons.slice(0,4)
 
-	out.forEach(line => {reseponse.push(`${joiner} ${line}`)})
-	if (validmons.length > 5) {
-		response.push(`Showing first 5/${validmons.length} matches.`)
+	out.forEach(line => {response.push(`${joiner} ${line}`)})
+	if (validmons.length > 4) {
+		response.push(`Showing first 4/${validmons.length} matches.`)
 	}
 	if (response.length == 0) {
-		reseponse.push("Error'd really badly.")
+		response.push("Error'd really badly.")
 	}
 	return response
 }

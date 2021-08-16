@@ -3,6 +3,7 @@
 	"HOMEGUILD" : 0,
 	"HOMECATCHFIX" : "",
 	"GLOBALPREFIX": "!",
+	"INVITEURL" : "",
 	"HINTSTART" : "The pokémon is",
 	"POKETWO_ID" : 716390085896962058,
 	"DEBUG" : false

@@ -1,31 +1,44 @@
 //
 // todo:
-// slash commands? or mentions
+// slash commands? or mentions?
 // - help - list commands and their descriptions
 // - invite - DM the user with an invite? or post as a response
-// - catchfix - sets the server's catchfix
 // light database to store catchfixes per server
+// - catchfix - sets the server's catchfix
 
-const {token, HOMEGUILD, HOMECATCHFIX, PREFIX, HINTSTART, POKETWO_ID, DEBUG} = require("./config.json");
+const {token, HOMEGUILD, HOMECATCHFIX, PREFIX, HINTSTART, INVITEURL, POKETWO_ID, DEBUG} = require("./config.json");
 const {POKEMONLIST} = require("./pokemon.json")
 
 const { Client, Intents } = require('discord.js');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.DIRECT_MESSAGES] });
 
 client.on('messageCreate', async message => {
-	if(message.content.startsWith(`${PREFIX}ping`))	{
-		message.channel.send(`${client.ws.ping}ms.`);
-		console.log(`pinged! ${client.ws.ping}ms`);
-	}
-
 	if ( message.author.id == POKETWO_ID || DEBUG) {
 		if ( message.content.startsWith(HINTSTART) ) {
 			var text = check(message.content,message.guild.id)
 			message.channel.send(text)
 			}
 		}
+	let args;
+	if (message.guild) {
+		args = message.content.slice(PREFIX.length).trim().split(/\s+/);
+	} else {
+		const slice = message.content.startsWith(PREFIX) ? PREFIX.length : 0;
+		args = message.content.slice(slice).split(/\s+/);
+	}
 
-
+	const command = args.shift().toLowerCase();
+	if(command === "ping")	{
+		message.channel.send(`${client.ws.ping}ms.`);
+		console.log(`pinged! ${client.ws.ping}ms`);
+	} else if (command === "help") {
+		message.channel.send(`The bot will automatically respond to poketwo's messages that start with the hint message ("The pokémon is" by default).\n
+Commands: help, ping\n
+Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
+	} else if (command === "invite") {
+		message.channel.send("Invite me to your server!\n" +
+			INVITEURL)
+	}
 });
 
 client.once( 'ready', () => { //run getpage on a timed loop, if fail then logirthimically increase duration between checking

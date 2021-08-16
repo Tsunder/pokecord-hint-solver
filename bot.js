@@ -68,7 +68,7 @@ function check (text,guildId) {
 	}
 
 	var joiner = guildId == HOMEGUILD ? `\n${HOMECATCHFIX} `:`\n`;
-	if (validmons.length > 20 ) {
+	if (validmons.length > 10 ) {
 		var out = validmons.slice(0,10).join(joiner)
 		return `${joiner}${out}\nShowing first 10/${validmons.length} matches.`
 	}

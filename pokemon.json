@@ -360,6 +360,7 @@
 			"Morpeko",
 			"Mudbray",
 			"Murkrow",
+			"Nidoran",
 			"Nincada",
 			"Ninjask",
 			"Noctowl",
@@ -934,14 +935,16 @@
 			"Alolan Grimer",
 			"Alolan Meowth",
 			"Alolan Raichu",
-			"Alolan Vulpix"
+			"Alolan Vulpix",
+			"Pa'u Oricorio"
 		],
 		[
 			"Alolan Diglett",
 			"Alolan Dugtrio",
 			"Alolan Geodude",
 			"Alolan Persian",
-			"Alolan Rattata"
+			"Alolan Rattata",
+			"Sensu Oricorio"
 		],
 		[
 			"Alolan Graveler",
@@ -960,7 +963,8 @@
 			"Galarian Linoone",
 			"Galarian Moltres",
 			"Galarian Slowbro",
-			"Galarian Weezing"
+			"Galarian Weezing",
+			"Pom-Pom Oricorio"
 		],
 		[
 			"Galarian Articuno",

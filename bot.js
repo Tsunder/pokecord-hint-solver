@@ -17,7 +17,7 @@ const underscore = /(\\_|_)/g
 client.on('messageCreate', async message => {
 	if ( message.author.id == POKETWO_ID || DEBUG) {
 		if ( message.content.startsWith(HINTSTART) ) {
-			var texts = check(message.content,message.guild.id)
+			var texts = check(message.content.substring(15,message.content.length-1),message.guild.id)
 			texts.forEach(text => {message.channel.send(text)})
 			}
 		}
@@ -41,7 +41,7 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 		message.channel.send("Invite me to your server!\n" +
 			INVITEURL)
 	} else if (command === "solve") {
-		var texts = check(args+".", message.guild.id)
+		var texts = check(args, message.guild.id)
 		texts.forEach(text => {message.channel.send(text)})
 	}
 });
@@ -52,7 +52,6 @@ client.once( 'ready', () => { //run getpage on a timed loop, if fail then logirt
 
 //returns an array of string
 function check (text,guildId) {
-	var text = texto.substring(15,texto.length-1)
 	//replacing _ for regex
 	text = text.replace(underscore,".")
 	var reg = new RegExp(text)
@@ -75,7 +74,7 @@ function check (text,guildId) {
 	var response = []
 	if (validmons.length == 0) {
 		response.push("No matches found!")
-		console.log(`No matches found for: ${texto}`)
+		console.log(`No matches found for: ${text}`)
 		return response
 	}
 	var joiner = guildId == HOMEGUILD ? `${HOMECATCHFIX} `:``;

@@ -23,6 +23,7 @@ client.on('messageCreate', async message => {
 		}
 	let args;
 	if (message.guild) {
+		if (!message.content.startsWith(GLOBALPREFIX)) { return; }
 		args = message.content.slice(GLOBALPREFIX.length).trim().split(/\s+/);
 	} else {
 		const slice = message.content.startsWith(GLOBALPREFIX) ? GLOBALPREFIX.length : 0;
@@ -41,7 +42,7 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 		message.channel.send("Invite me to your server!\n" +
 			INVITEURL)
 	} else if (command === "solve") {
-		var texts = check(args, message.guild.id)
+		var texts = check(args.join(" "), message.guild.id)
 		texts.forEach(text => {message.channel.send(text)})
 	}
 });
@@ -51,17 +52,15 @@ client.once( 'ready', () => { //run getpage on a timed loop, if fail then logirt
 });
 
 //returns an array of string
-function check (text,guildId) {
+function check (texto,guildId) {
 	//replacing _ for regex
-	text = text.replace(underscore,".")
+	var text = texto.replace(underscore,".")
 	var reg = new RegExp(text)
 	var validmons = POKEMONLIST[text.length].filter((mon) => {return mon.match(reg)})
 	if (validmons.length == 0) {
 		if (text.length > 14) {
 			text = text.substr(text.lastIndexOf(" ")+1)
-			text = text.split(":")[0]
 		}
-
 		reg = new RegExp(text.replace(underscore,"."))
 		validmons = POKEMONLIST[text.length].filter((mon) => {return mon.match(reg)})
 		if (validmons.length == 0) {
@@ -74,7 +73,7 @@ function check (text,guildId) {
 	var response = []
 	if (validmons.length == 0) {
 		response.push("No matches found!")
-		console.log(`No matches found for: ${text}`)
+		console.log(`No matches found for: ${texto}`)
 		return response
 	}
 	var joiner = guildId == HOMEGUILD ? `${HOMECATCHFIX} `:``;

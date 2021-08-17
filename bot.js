@@ -42,6 +42,11 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 		message.channel.send("Invite me to your server!\n" +
 			INVITEURL)
 	} else if (command === "solve") {
+		//no args, define the command
+		if (args.length == 0) {
+			message.channel.send("Enter a hint to resolve!")
+			return;
+		}
 		var texts = check(args.join(" "), message.guild.id)
 		texts.forEach(text => {message.channel.send(text)})
 	}
@@ -51,10 +56,12 @@ client.once( 'ready', () => { //run getpage on a timed loop, if fail then logirt
 	console.log("poke hint solver bot ready");
 });
 
-//returns an array of string
+//returns an array of strings that potentially match the hint provided
 function check (texto,guildId) {
-	//replacing _ for regex
+	// limit the text to only as long as the longest pokemon name we have
+	// and convert to lowercase
 	texto = texto.substring(0,POKEMONLIST.length-1).toLowerCase();
+	//replacing _ for regex
 	var text = texto.replace(underscore,".")
 	var reg = new RegExp(text)
 	var validmons = POKEMONLIST[text.length].filter((mon) => {return mon.match(reg)})
@@ -77,6 +84,8 @@ function check (texto,guildId) {
 		console.log(`No matches found for: ${texto}`)
 		return response
 	}
+
+	//catch prefix, eventually will be dynamic
 	var joiner = guildId == HOMEGUILD ? `${HOMECATCHFIX} `:``;
 	var out = validmons.slice(0,4)
 

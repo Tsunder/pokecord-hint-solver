@@ -59,12 +59,12 @@ function check (text,guildId) {
 		}
 		reg = new RegExp(text.replace(/\\_/g,"."))
 		validmons = POKEMONLIST[text.length].filter((mon) => {return mon.match(reg)})
-		if(DEBUG) {console.log(validmons)};
 	}
 	
 	var response = []
 	if (validmons.length == 0) {
 		response.push("No matches found!")
+		Console.log(`No matches found for: ${text}`)
 		return response
 	}
 	var joiner = guildId == HOMEGUILD ? `${HOMECATCHFIX} `:``;

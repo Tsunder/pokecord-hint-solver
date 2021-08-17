@@ -54,6 +54,7 @@ client.once( 'ready', () => { //run getpage on a timed loop, if fail then logirt
 //returns an array of string
 function check (texto,guildId) {
 	//replacing _ for regex
+	texto = texto.toLowerCase();
 	var text = texto.replace(underscore,".")
 	var reg = new RegExp(text)
 	var validmons = POKEMONLIST[text.length].filter((mon) => {return mon.match(reg)})

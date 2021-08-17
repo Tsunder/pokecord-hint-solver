@@ -59,7 +59,7 @@ function check (texto,guildId) {
 	var validmons = POKEMONLIST[text.length].filter((mon) => {return mon.match(reg)})
 	if (validmons.length == 0) {
 		if (text.length > 14) {
-			text = text.substr(text.lastIndexOf(" ")+1)
+			text = texto.substr(texto.lastIndexOf(" ")+1)
 		}
 		reg = new RegExp(text.replace(underscore,"."))
 		validmons = POKEMONLIST[text.length].filter((mon) => {return mon.match(reg)})

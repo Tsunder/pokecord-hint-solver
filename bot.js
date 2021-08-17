@@ -89,7 +89,7 @@ function check (texto,guildId) {
 	var joiner = guildId == HOMEGUILD ? `${HOMECATCHFIX} `:``;
 	var out = validmons.slice(0,4)
 
-	out.forEach(line => {response.push(`${joiner}${line}`)})
+	out.forEach(line => {response.push(`${joiner}${toTitleCase(line)}`)})
 	if (validmons.length > 4) {
 		response.push(`Showing first 4/${validmons.length} matches.`)
 	}
@@ -97,6 +97,15 @@ function check (texto,guildId) {
 		response.push("Error'd really badly.")
 	}
 	return response
+}
+
+function toTitleCase(str) {
+  return str.replace(
+    /\w\S*/g,
+    function(txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    }
+  );
 }
 
 client.login(token)

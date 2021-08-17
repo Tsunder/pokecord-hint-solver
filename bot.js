@@ -17,12 +17,13 @@ const underscore = /(\\_|_)/g
 client.on('messageCreate', async message => {
 	if ( message.author.id == POKETWO_ID || DEBUG) {
 		if ( message.content.startsWith(HINTSTART) ) {
-			var texts = check(message.content,message.guild.id)
+			var texts = check(message.content.substring(15,message.content.length-1),message.guild.id)
 			texts.forEach(text => {message.channel.send(text)})
 			}
 		}
 	let args;
 	if (message.guild) {
+		if (!message.content.startsWith(GLOBALPREFIX)) { return; }
 		args = message.content.slice(GLOBALPREFIX.length).trim().split(/\s+/);
 	} else {
 		const slice = message.content.startsWith(GLOBALPREFIX) ? GLOBALPREFIX.length : 0;
@@ -35,11 +36,14 @@ client.on('messageCreate', async message => {
 		console.log(`pinged! ${client.ws.ping}ms`);
 	} else if (command === "help") {
 		message.channel.send(`The bot will automatically respond to poketwo's messages that start with the hint message ("The pokémon is" by default).\n
-Commands: help, ping, invite\n
+Commands: help, invite, ping, solve\n
 Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 	} else if (command === "invite") {
 		message.channel.send("Invite me to your server!\n" +
 			INVITEURL)
+	} else if (command === "solve") {
+		var texts = check(args.join(" "), message.guild.id)
+		texts.forEach(text => {message.channel.send(text)})
 	}
 });
 
@@ -48,18 +52,16 @@ client.once( 'ready', () => { //run getpage on a timed loop, if fail then logirt
 });
 
 //returns an array of string
-function check (text,guildId) {
-	var text = texto.substring(15,texto.length-1)
+function check (texto,guildId) {
 	//replacing _ for regex
-	text = text.replace(underscore,".")
+	texto = texto.toLowerCase();
+	var text = texto.replace(underscore,".")
 	var reg = new RegExp(text)
 	var validmons = POKEMONLIST[text.length].filter((mon) => {return mon.match(reg)})
 	if (validmons.length == 0) {
 		if (text.length > 14) {
-			text = text.substr(text.lastIndexOf(" ")+1)
-			text = text.split(":")[0]
+			text = texto.substr(texto.lastIndexOf(" ")+1)
 		}
-
 		reg = new RegExp(text.replace(underscore,"."))
 		validmons = POKEMONLIST[text.length].filter((mon) => {return mon.match(reg)})
 		if (validmons.length == 0) {

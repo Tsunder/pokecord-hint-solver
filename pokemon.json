@@ -1,12 +1,17 @@
 {
 	"POKEMONLIST" : [
+		//Pokemon with character length 0
 		[],
+		//Pokemon with character length 1
 		[],
+		//Pokemon with character length 2
 		[],
+		//Pokemon with character length 3
 		[
 			"mew",
 			"muk"
 		],
+		//Pokemon with character length 4
 		[
 			"abra",
 			"aron",
@@ -20,6 +25,7 @@
 			"uxie",
 			"xatu"
 		],
+		//Pokemon with character length 5
 		[
 			"?????",
 			"absol",
@@ -68,6 +74,7 @@
 			"zorua",
 			"zubat"
 		],
+		//Pokemon with character length 6
 		[
 			"aggron",
 			"amaura",
@@ -221,6 +228,7 @@
 			"zarude",
 			"zekrom"
 		],
+		//Pokemon with character length 7
 		[
 			"altaria",
 			"ambipom",
@@ -466,6 +474,7 @@
 			"zoroark",
 			"zygarde"
 		],
+		//Pokemon with character length 8
 		[
 			"accelgor",
 			"alakazam",
@@ -684,6 +693,7 @@
 			"zangoose",
 			"zweilous"
 		],
+		//Pokemon with character length 9
 		[
 			"abomasnow",
 			"aegislash",
@@ -847,6 +857,7 @@
 			"zebstrika",
 			"zigzagoon"
 		],
+		//Pokemon with character length 10
 		[
 			"??????????",
 			"aerodactyl",
@@ -918,6 +929,7 @@
 			"wigglytuff",
 			"wishiwashi"
 		],
+		//Pokemon with character length 11
 		[
 			"10% zygarde",
 			"barraskewda",
@@ -930,10 +942,12 @@
 			"polteageist",
 			"stonjourner"
 		],
+		//Pokemon with character length 12
 		[
 			"alolan golem",
 			"crabominable"
 		],
+		//Pokemon with character length 13
 		[
 			"alolan grimer",
 			"alolan meowth",
@@ -941,6 +955,7 @@
 			"alolan vulpix",
 			"pa'u oricorio"
 		],
+		//Pokemon with character length 14
 		[
 			"alolan diglett",
 			"alolan dugtrio",
@@ -950,6 +965,7 @@
 			"alolan rattata",
 			"sensu oricorio"
 		],
+		//Pokemon with character length 15
 		[
 			"alolan graveler",
 			"alolan raticate",
@@ -959,6 +975,7 @@
 			"galarian yamask",
 			"galarian zapdos"
 		],
+		//Pokemon with character length 16
 		[
 			"alolan exeggutor",
 			"alolan ninetales",
@@ -972,6 +989,7 @@
 			"galarian weezing",
 			"pom-pom oricorio"
 		],
+		//Pokemon with character length 17
 		[
 			"galarian articuno",
 			"galarian darumaka",
@@ -981,23 +999,34 @@
 			"galarian slowpoke",
 			"galarian stunfisk"
 		],
+		//Pokemon with character length 18
 		[
 			"galarian zigzagoon"
 		],
+		//Pokemon with character length 19
 		[
 			"galarian darmanitan",
 			"galarian farfetch'd"
 		],
+		//Pokemon with character length 20
 		[],
+		//Pokemon with character length 21
 		[
 			"blue-striped basculin"
 		],
+		//Pokemon with character length 22
 		[],
+		//Pokemon with character length 23
 		[],
+		//Pokemon with character length 24
 		[],
+		//Pokemon with character length 25
 		[],
+		//Pokemon with character length 26
 		[],
+		//Pokemon with character length 27
 		[],
+		//Pokemon with character length 28
 		[
 			"galarian darmanitan zen mode"
 		]

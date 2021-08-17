@@ -12,6 +12,8 @@ const {POKEMONLIST} = require("./pokemon.json")
 const { Client, Intents } = require('discord.js');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.DIRECT_MESSAGES] });
 
+const underscore = /(\\_|_)/g
+
 client.on('messageCreate', async message => {
 	if ( message.author.id == POKETWO_ID || DEBUG) {
 		if ( message.content.startsWith(HINTSTART) ) {
@@ -47,9 +49,9 @@ client.once( 'ready', () => { //run getpage on a timed loop, if fail then logirt
 
 //returns an array of string
 function check (text,guildId) {
-	text = text.substring(15,text.length-1)
+	var text = texto.substring(15,texto.length-1)
 	//replacing _ for regex
-	text = text.replace(/(\\_|_)/g,".")
+	text = text.replace(underscore,".")
 	var reg = new RegExp(text)
 	var validmons = POKEMONLIST[text.length].filter((mon) => {return mon.match(reg)})
 	if (validmons.length == 0) {
@@ -57,14 +59,20 @@ function check (text,guildId) {
 			text = text.substr(text.lastIndexOf(" ")+1)
 			text = text.split(":")[0]
 		}
-		reg = new RegExp(text.replace(/\\_/g,"."))
+
+		reg = new RegExp(text.replace(underscore,"."))
 		validmons = POKEMONLIST[text.length].filter((mon) => {return mon.match(reg)})
+		if (validmons.length == 0) {
+			text = text.substring(0,text.length-1);
+			reg = new RegExp(text.replace(underscore,"."))
+			validmons = POKEMONLIST[text.length].filter((mon) => {return mon.match(reg)})
+		}
 	}
 	
 	var response = []
 	if (validmons.length == 0) {
 		response.push("No matches found!")
-		Console.log(`No matches found for: ${text}`)
+		console.log(`No matches found for: ${texto}`)
 		return response
 	}
 	var joiner = guildId == HOMEGUILD ? `${HOMECATCHFIX} `:``;

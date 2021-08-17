@@ -732,6 +732,7 @@
 			"excadrill",
 			"exeggcute",
 			"exeggutor",
+			"fan rotom",
 			"ferroseed",
 			"frogadier",
 			"gardevoir",
@@ -769,6 +770,7 @@
 			"metagross",
 			"mightyena",
 			"mismagius",
+			"mow rotom",
 			"naganadel",
 			"nidoqueen",
 			"ninetales",
@@ -879,6 +881,7 @@
 			"gothitelle",
 			"grimmsnarl",
 			"helioptile",
+			"heat rotom",
 			"hippopotas",
 			"hitmonchan",
 			"incineroar",
@@ -908,6 +911,7 @@
 			"type: null",
 			"typhlosion",
 			"victreebel",
+			"wash rotom",
 			"weepinbell",
 			"whimsicott",
 			"whirlipede",
@@ -922,6 +926,7 @@
 			"corviknight",
 			"corvisquire",
 			"fletchinder",
+			"frost rotom",
 			"polteageist",
 			"stonjourner"
 		],
@@ -948,6 +953,7 @@
 		[
 			"alolan graveler",
 			"alolan raticate",
+			"blade aegislash",
 			"galarian meowth",
 			"galarian ponyta",
 			"galarian yamask",
@@ -983,7 +989,9 @@
 			"galarian farfetch'd"
 		],
 		[],
-		[],
+		[
+			"blue-striped basculin"
+		],
 		[],
 		[],
 		[],
@@ -991,7 +999,7 @@
 		[],
 		[],
 		[
-		"galarian darmanitan zen mode"
+			"galarian darmanitan zen mode"
 		]
 	]
 }

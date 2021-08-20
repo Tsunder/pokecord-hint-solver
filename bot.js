@@ -14,10 +14,7 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_
 
 const KeyvRedis = require('@keyv/redis');
 const Keyv = require('keyv');
-const keyvRedis = new KeyvRedis('redis://user:pass@localhost:6379', namespace: 'prefix');
-const keyvRedisc = new KeyvRedis('redis://user:pass@localhost:6379', namespace:'catchfixes');
-const prefixes = new Keyv({ store: keyvRedis });
-const catchfixes = new Keyv({ store: keyvRedisc });
+const database = new KeyvRedis('sqlite://database.sqlite');
 
 const underscore = /(\\_|_)/g
 
@@ -34,7 +31,7 @@ client.on('messageCreate', async message => {
 		if (message.content.startsWith(GLOBALPREFIX)) {
 			prefix = GLOBALPREFIX;
 		} else {
-			const guildPrefix = await prefixes.get(message.guild.id);
+			const guildPrefix = await database.get(`${message.guild.id}p`);
 			if (message.content.startsWith(guildPrefix)) prefix = guildPrefix;
 		}
 
@@ -66,17 +63,17 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 		texts.forEach(text => {message.channel.send(text)})
 	} else if (command === "prefix") {
 		if (args.length) {
-			await prefixes.set(message.guild.id, args[0]);
+			await database.set(`${message.guild.id}p`, args[0]);
 			return message.channel.send(`Successfully set prefix to \`${args[0]}\``);
 		}
-		return message.channel.send(`Prefix is \`${await prefixes.get(message.guild.id) || GLOBALPREFIX}\``);
+		return message.channel.send(`Prefix is \`${await database.get(`${message.guild.id}p`) || GLOBALPREFIX}\``);
 
 	} else if (command === "catchfix") {
 		if (args.length) {
-			await catchfixes.set(message.guild.id, args[0]);
+			await database.set(`${message.guild.id}c`, args[0]);
 			return message.channel.send(`Successfully set catchfix to \`${args[0]}\``);
 		}
-		return message.channel.send(`Catchfix is \`${await catchfixes.get(message.guild.id) || GLOBALCATCHFIX}\``);
+		return message.channel.send(`Catchfix is \`${await database.get(`${message.guild.id}c`) || GLOBALCATCHFIX}\``);
 
 	}
 });

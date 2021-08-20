@@ -77,15 +77,14 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 			return message.channel.send(`Successfully set prefix to \`${args[0]}\``);
 		}
 		let prefix = await database.get(`${message.guild.id}p`) || GLOBALPREFIX;
-		return message.channel.send(`Prefix is \`${prefix}\`\nUse ${prefix}prefix \`NewPrefix\` to set a new one.`);
+		return message.channel.send(`Prefix is \`${prefix}\`\nUse \`${prefix}prefix NewPrefix\` to set a new one.`);
 
 	} else if (command === "catchfix") {
 		if (args.length) {
 			await database.set(`${message.guild.id}c`, args[0]);
 			return message.channel.send(`Successfully set catchfix to \`${args[0]}\``);
 		}
-
-		return message.channel.send(`Catchfix is \`${await database.get(`${message.guild.id}c`) || GLOBALCATCHFIX}\`\nUse ${await database.get(`${message.guild.id}p`) || GLOBALPREFIX}catchfix \`NewCatcchfix\` to set a new one.`);
+		return message.channel.send(`Catchfix is \`${await database.get(`${message.guild.id}c`) || GLOBALCATCHFIX}\`\nUse \`${await database.get(`${message.guild.id}p`) || GLOBALPREFIX}catchfix NewCatchfix\` to set a new one.`);
 	}
 });
 

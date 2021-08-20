@@ -22,6 +22,7 @@ client.on('messageCreate', async message => {
 		if ( message.content.startsWith(HINTSTART) ) {
 			var texts = check(message.content.substring(15,message.content.length-1),message.guild.id)
 			texts.forEach(text => {message.channel.send(text)})
+			return;
 			}
 		}
 	let args;
@@ -60,6 +61,16 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 		}
 		var texts = check(args.join(" "), message.guild.id)
 		texts.forEach(text => {message.channel.send(text)})
+		return;
+	} else if (command === "list") {
+		//no args, define the command
+		if (args.length == 0) {
+			message.channel.send("Enter a hint to list all matching pokemon.")
+			return;
+		}
+		var texts = check(args.join(" "), 0, true)
+		texts.forEach(text => {message.channel.send(text)})
+		return;
 	} else if (command === "prefix") {
 		if (args.length) {
 			await database.set(`${message.guild.id}p`, args[0]);
@@ -83,7 +94,7 @@ client.once( 'ready', () => {
 });
 
 //returns an array of strings that potentially match the hint provided
-function check (texto,guildId) {
+function check (texto,guildId,chunk) {
 	// limit the text to only as long as the longest pokemon name we have
 	// and convert to lowercase
 	texto = texto.substring(0,POKEMONLIST.length-1).toLowerCase();
@@ -103,13 +114,17 @@ function check (texto,guildId) {
 			validmons = POKEMONLIST[text.length].filter((mon) => {return mon.match(reg)})
 		}
 	}
-	
-	var response = []
-	if (validmons.length == 0) {
-		response.push("No matches found!")
-		console.log(`No matches found for: ${texto}`)
-		return response
+
+	if (chunk) {
+		chunk = validmons.join(", ")
+		return chunk.length>1950 ? [`${chunk.substring(0,1950)} and more...`] : [chunk]
 	}
+	if (validmons.length == 0) {
+		console.log(`No matches found for: ${texto}`)
+		return ["No matches found!"]
+	}
+
+	var response = []
 
 	//catch prefix, eventually will be dynamic
 	var joiner = guildId == HOMEGUILD ? `${HOMECATCHFIX} `:``;
@@ -119,11 +134,10 @@ function check (texto,guildId) {
 	if (validmons.length > 4) {
 		response.push(`Showing first 4/${validmons.length} matches.`)
 	}
-	if (response.length == 0) {
-		response.push("Error'd really badly.")
-	}
+
 	return response
 }
+
 
 function toTitleCase(str) {
   return str.replace(

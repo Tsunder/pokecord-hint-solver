@@ -81,10 +81,11 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 
 	} else if (command === "catchfix") {
 		if (args.length) {
+			if (args[0] === "----") { args[0] = "" }
 			await database.set(`${message.guild.id}c`, args[0]);
 			return message.channel.send(`Successfully set catchfix to \`${args[0]}\``);
 		}
-		return message.channel.send(`Catchfix is \`${await database.get(`${message.guild.id}c`) || GLOBALCATCHFIX}\`\nUse \`${await database.get(`${message.guild.id}p`) || GLOBALPREFIX}catchfix NewCatchfix\` to set a new one.`);
+		return message.channel.send(`Catchfix is \`${await database.get(`${message.guild.id}c`) || GLOBALCATCHFIX}\`\nUse \`${await database.get(`${message.guild.id}p`) || GLOBALPREFIX}catchfix NewCatchfix\` to set a new one, or \`----\` to remove.`);
 	}
 });
 
@@ -93,7 +94,7 @@ client.once( 'ready', () => {
 });
 
 //returns an array of strings that potentially match the hint provided
-function check (texto,guildId,chunk) {
+async function  check (texto,guildId,chunk) {
 	// limit the text to only as long as the longest pokemon name we have
 	// and convert to lowercase
 	texto = texto.substring(0,POKEMONLIST.length-1).toLowerCase();
@@ -126,7 +127,7 @@ function check (texto,guildId,chunk) {
 	var response = []
 
 	//catch prefix, eventually will be dynamic
-	var joiner = guildId == HOMEGUILD ? `${HOMECATCHFIX} `:``;
+	var joiner = await database.get(`${message.guild.id}c`) || GLOBALCATCHFIX;
 	var out = validmons.slice(0,4)
 
 	out.forEach(line => {response.push(`${joiner}${toTitleCase(line)}`)})

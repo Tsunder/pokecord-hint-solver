@@ -48,7 +48,7 @@ client.on('messageCreate', async message => {
 		console.log(`pinged! ${client.ws.ping}ms`);
 	} else if (command === "help") {
 		message.channel.send(`The bot will automatically respond to poketwo's messages that start with the hint message ("The pokémon is" by default).\n
-Commands: help, invite, ping, solve, catchfix, prefix\n
+Commands: help, invite, ping, solve, list, catchfix, prefix\n
 Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 	} else if (command === "invite") {
 		message.channel.send("Invite me to your server!\n" +

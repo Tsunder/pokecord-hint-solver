@@ -932,13 +932,15 @@
 		],
 		[
 			"alolan golem",
-			"crabominable"
+			"crabominable",
+			"speed deoxys"
 		],
 		[
 			"alolan grimer",
 			"alolan meowth",
 			"alolan raichu",
 			"alolan vulpix",
+			"attack deoxys",
 			"pa'u oricorio"
 		],
 		[
@@ -948,7 +950,12 @@
 			"alolan marowak",
 			"alolan persian",
 			"alolan rattata",
-			"sensu oricorio"
+			"defense deoxys",
+			"rainy castform",
+			"sensu oricorio",
+			"snowy castform",
+			"sunny castform"
+
 		],
 		[
 			"alolan graveler",

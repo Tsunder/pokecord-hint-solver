@@ -6,15 +6,14 @@
 // light database to store catchfixes per server
 // - catchfix - sets the server's catchfix
 
-const {token, HOMEGUILD, HOMECATCHFIX, GLOBALPREFIX, HINTSTART, INVITEURL, POKETWO_ID, DEBUG} = require("./config.json");
+const {token, HOMEGUILD, HOMECATCHFIX, GLOBALCATCHFIX, GLOBALPREFIX, HINTSTART, INVITEURL, POKETWO_ID, DEBUG} = require("./config.json");
 const {POKEMONLIST} = require("./pokemon.json")
 
 const { Client, Intents } = require('discord.js');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.DIRECT_MESSAGES] });
 
-const KeyvRedis = require('@keyv/redis');
 const Keyv = require('keyv');
-const database = new KeyvRedis('sqlite://database.sqlite');
+const database = new Keyv('sqlite://./database.sqlite');
 
 const underscore = /(\\_|_)/g
 
@@ -48,7 +47,7 @@ client.on('messageCreate', async message => {
 		console.log(`pinged! ${client.ws.ping}ms`);
 	} else if (command === "help") {
 		message.channel.send(`The bot will automatically respond to poketwo's messages that start with the hint message ("The pokémon is" by default).\n
-Commands: help, invite, ping, solve\n
+Commands: help, invite, ping, solve, catchfix, prefix\n
 Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 	} else if (command === "invite") {
 		message.channel.send("Invite me to your server!\n" +
@@ -66,15 +65,16 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 			await database.set(`${message.guild.id}p`, args[0]);
 			return message.channel.send(`Successfully set prefix to \`${args[0]}\``);
 		}
-		return message.channel.send(`Prefix is \`${await database.get(`${message.guild.id}p`) || GLOBALPREFIX}\``);
+		let prefix = await database.get(`${message.guild.id}p`) || GLOBALPREFIX;
+		return message.channel.send(`Prefix is \`${prefix}\`\nUse ${prefix}prefix \`NewPrefix\` to set a new one.`);
 
 	} else if (command === "catchfix") {
 		if (args.length) {
 			await database.set(`${message.guild.id}c`, args[0]);
 			return message.channel.send(`Successfully set catchfix to \`${args[0]}\``);
 		}
-		return message.channel.send(`Catchfix is \`${await database.get(`${message.guild.id}c`) || GLOBALCATCHFIX}\``);
 
+		return message.channel.send(`Catchfix is \`${await database.get(`${message.guild.id}c`) || GLOBALCATCHFIX}\`\nUse ${await database.get(`${message.guild.id}p`) || GLOBALPREFIX}catchfix \`NewCatcchfix\` to set a new one.`);
 	}
 });
 

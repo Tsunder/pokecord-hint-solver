@@ -20,7 +20,8 @@ const underscore = /(\\_|_)/g
 client.on('messageCreate', async message => {
 	if ( message.author.id == POKETWO_ID || DEBUG) {
 		if ( message.content.startsWith(HINTSTART) ) {
-			var texts = check(message.content.substring(15,message.content.length-1),await database.get(`${message.guild.id}c`),)
+			var catchfix = await database.get(`${message.guild.id}c`) || GLOBALCATCHFIX
+			var texts = check(message.content.substring(15,message.content.length-1),catchfix)
 			texts.forEach(text => {message.channel.send(text)})
 			return;
 			}
@@ -59,8 +60,7 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 			message.channel.send("Enter a hint to resolve!")
 			return;
 		}
-		var texts = check(args.join(" "), await database.get(`${message.guild.id}c`))
-		console.log(texts)
+		var texts = check(args.join(" "), "")
 		texts.forEach(text => {message.channel.send(text)})
 		return;
 	} else if (command === "list") {
@@ -75,7 +75,7 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 	} else if (command === "prefix") {
 		if (args.length) {
 			if(!(message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR))) {
-				return message.channel.send(`I'm sorry, ${message.author}.afraid I can't do that.`)
+				return message.channel.send(`I'm sorry, ${message.author}. I'm afraid I can't do that.`)
 			}
 			await database.set(`${message.guild.id}p`, args[0]);
 			return message.channel.send(`Successfully set prefix to \`${args[0]}\``);
@@ -86,9 +86,9 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 	} else if (command === "catchfix") {
 		if (args.length) {
 			if(!(message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR))) {
-				return message.channel.send(`I'm sorry, ${message.author}.afraid I can't do that.`)
+				return message.channel.send(`I'm sorry, ${message.author}. I'm afraid I can't do that.`)
 			}
-			if (args[0] === "----") { args[0] = " " }
+			if (args[0] === "----") { args[0] = "  " }
 			await database.set(`${message.guild.id}c`, args[0]);
 			return message.channel.send(`Successfully set catchfix to \`${args[0]}\``);
 		}

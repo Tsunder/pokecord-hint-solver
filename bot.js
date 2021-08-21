@@ -104,9 +104,12 @@ client.once( 'ready', () => {
 function  check (texto,catchfix,chunk) {
 	// limit the text to only as long as the longest pokemon name we have
 	// and convert to lowercase
-	texto = texto.substring(0,POKEMONLIST.length-1).toLowerCase();
+	//texto = texto.substring(0,POKEMONLIST.length-1).toLowerCase();
 	//replacing _ for regex
-	var text = texto.replace(underscore,".")
+	if (texto.length > 100) {
+		return ["Hint too long"]
+	}
+	var text = texto.replace(underscore,".").substring(0,POKEMONLIST.length-1).toLowerCase();
 	var reg = new RegExp(text)
 	var validmons = POKEMONLIST[text.length].filter((mon) => {return mon.match(reg)})
 	if (validmons.length == 0) {

@@ -6,7 +6,7 @@
 // light database to store catchfixes per server
 // - catchfix - sets the server's catchfix
 
-const {token, HOMEGUILD, HOMECATCHFIX, GLOBALPREFIX, HINTSTART, INVITEURL, POKETWO_ID, DEBUG} = require("./config.json");
+const {token, GLOBALPREFIX, HINTSTART, INVITEURL, POKETWO_ID, DEBUG} = require("./config.json");
 const {POKEMONLIST} = require("./pokemon.json")
 
 const { Client, Intents, Permissions } = require('discord.js');

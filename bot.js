@@ -6,10 +6,10 @@
 // light database to store catchfixes per server
 // - catchfix - sets the server's catchfix
 
-const {token, HOMEGUILD, HOMECATCHFIX, GLOBALCATCHFIX, GLOBALPREFIX, HINTSTART, INVITEURL, POKETWO_ID, DEBUG} = require("./config.json");
+const {token, HOMEGUILD, HOMECATCHFIX, GLOBALPREFIX, HINTSTART, INVITEURL, POKETWO_ID, DEBUG} = require("./config.json");
 const {POKEMONLIST} = require("./pokemon.json")
 
-const { Client, Intents } = require('discord.js');
+const { Client, Intents, Permissions } = require('discord.js');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.DIRECT_MESSAGES] });
 
 const Keyv = require('keyv');
@@ -20,7 +20,8 @@ const underscore = /(\\_|_)/g
 client.on('messageCreate', async message => {
 	if ( message.author.id == POKETWO_ID || DEBUG) {
 		if ( message.content.startsWith(HINTSTART) ) {
-			var texts = check(message.content.substring(15,message.content.length-1),message.guild.id)
+			var catchfix = await database.get(`${message.guild.id}c`) || ""
+			var texts = check(message.content.substring(15,message.content.length-1),catchfix)
 			texts.forEach(text => {message.channel.send(text)})
 			return;
 			}
@@ -47,7 +48,7 @@ client.on('messageCreate', async message => {
 		message.channel.send(`${client.ws.ping}ms.`);
 		console.log(`pinged! ${client.ws.ping}ms`);
 	} else if (command === "help") {
-		message.channel.send(`The bot will automatically respond to poketwo's messages that start with the hint message ("The pokémon is" by default).\n
+		message.channel.send(`The bot will automatically respond to poketwo's hint messages.\n
 Commands: help, invite, ping, solve, list, catchfix, prefix\n
 Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 	} else if (command === "invite") {
@@ -59,7 +60,7 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 			message.channel.send("Enter a hint to resolve!")
 			return;
 		}
-		var texts = check(args.join(" "), message.guild.id)
+		var texts = check(args.join(" "))
 		texts.forEach(text => {message.channel.send(text)})
 		return;
 	} else if (command === "list") {
@@ -68,11 +69,14 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 			message.channel.send("Enter a hint to list all matching pokemon.")
 			return;
 		}
-		var texts = check(args.join(" "), 0, true)
+		var texts = check(args.join(" "),"", true)
 		texts.forEach(text => {message.channel.send(text)})
 		return;
 	} else if (command === "prefix") {
 		if (args.length) {
+			if(!(message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR))) {
+				return message.channel.send(`I'm sorry, ${message.author}. I'm afraid I can't do that.`)
+			}
 			await database.set(`${message.guild.id}p`, args[0]);
 			return message.channel.send(`Successfully set prefix to \`${args[0]}\``);
 		}
@@ -81,10 +85,14 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 
 	} else if (command === "catchfix") {
 		if (args.length) {
+			if(!(message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR))) {
+				return message.channel.send(`I'm sorry, ${message.author}. I'm afraid I can't do that.`)
+			}
+			if (args[0] === "----") { args[0] = "" }
 			await database.set(`${message.guild.id}c`, args[0]);
-			return message.channel.send(`Successfully set catchfix to \`${args[0]}\``);
+			return message.channel.send(`Successfully set catchfix to \`${args[0]||"none"}\``);
 		}
-		return message.channel.send(`Catchfix is \`${await database.get(`${message.guild.id}c`) || GLOBALCATCHFIX}\`\nUse \`${await database.get(`${message.guild.id}p`) || GLOBALPREFIX}catchfix NewCatchfix\` to set a new one.`);
+		return message.channel.send(`Catchfix is \`${await database.get(`${message.guild.id}c`) || "none"}\`\nUse \`${await database.get(`${message.guild.id}p`) || GLOBALPREFIX}catchfix NewCatchfix\` to set a new one, or \`----\` to remove.`);
 	}
 });
 
@@ -93,7 +101,7 @@ client.once( 'ready', () => {
 });
 
 //returns an array of strings that potentially match the hint provided
-function check (texto,guildId,chunk) {
+function  check (texto,catchfix,chunk) {
 	// limit the text to only as long as the longest pokemon name we have
 	// and convert to lowercase
 	texto = texto.substring(0,POKEMONLIST.length-1).toLowerCase();
@@ -125,11 +133,9 @@ function check (texto,guildId,chunk) {
 
 	var response = []
 
-	//catch prefix, eventually will be dynamic
-	var joiner = guildId == HOMEGUILD ? `${HOMECATCHFIX} `:``;
 	var out = validmons.slice(0,4)
 
-	out.forEach(line => {response.push(`${joiner}${toTitleCase(line)}`)})
+	out.forEach(line => {response.push(`${catchfix||""} ${toTitleCase(line)}`)})
 	if (validmons.length > 4) {
 		response.push(`Showing first 4/${validmons.length} matches.`)
 	}

@@ -9,7 +9,7 @@
 const {token, HOMEGUILD, HOMECATCHFIX, GLOBALCATCHFIX, GLOBALPREFIX, HINTSTART, INVITEURL, POKETWO_ID, DEBUG} = require("./config.json");
 const {POKEMONLIST} = require("./pokemon.json")
 
-const { Client, Intents } = require('discord.js');
+const { Client, Intents, Permissions } = require('discord.js');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.DIRECT_MESSAGES] });
 
 const Keyv = require('keyv');
@@ -60,6 +60,7 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 			return;
 		}
 		var texts = check(args.join(" "), await database.get(`${message.guild.id}c`))
+		console.log(texts)
 		texts.forEach(text => {message.channel.send(text)})
 		return;
 	} else if (command === "list") {
@@ -68,11 +69,14 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 			message.channel.send("Enter a hint to list all matching pokemon.")
 			return;
 		}
-		var texts = check(args.join(" "), , true)
+		var texts = check(args.join(" "),"", true)
 		texts.forEach(text => {message.channel.send(text)})
 		return;
 	} else if (command === "prefix") {
 		if (args.length) {
+			if(!(message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR))) {
+				return message.channel.send(`I'm sorry, ${message.author}.afraid I can't do that.`)
+			}
 			await database.set(`${message.guild.id}p`, args[0]);
 			return message.channel.send(`Successfully set prefix to \`${args[0]}\``);
 		}
@@ -81,7 +85,10 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 
 	} else if (command === "catchfix") {
 		if (args.length) {
-			if (args[0] === "----") { args[0] = "" }
+			if(!(message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR))) {
+				return message.channel.send(`I'm sorry, ${message.author}.afraid I can't do that.`)
+			}
+			if (args[0] === "----") { args[0] = " " }
 			await database.set(`${message.guild.id}c`, args[0]);
 			return message.channel.send(`Successfully set catchfix to \`${args[0]}\``);
 		}
@@ -94,7 +101,7 @@ client.once( 'ready', () => {
 });
 
 //returns an array of strings that potentially match the hint provided
-async function  check (texto,catchfix,chunk) {
+function  check (texto,catchfix,chunk) {
 	// limit the text to only as long as the longest pokemon name we have
 	// and convert to lowercase
 	texto = texto.substring(0,POKEMONLIST.length-1).toLowerCase();
@@ -128,7 +135,7 @@ async function  check (texto,catchfix,chunk) {
 
 	var out = validmons.slice(0,4)
 
-	out.forEach(line => {response.push(`${catchfix||""}${toTitleCase(line)}`)})
+	out.forEach(line => {response.push(`${catchfix||""} ${toTitleCase(line)}`)})
 	if (validmons.length > 4) {
 		response.push(`Showing first 4/${validmons.length} matches.`)
 	}

@@ -2,7 +2,6 @@
 	"token": "yourtokenhere",
 	"HOMEGUILD" : 0,
 	"HOMECATCHFIX" : "",
-	"GLOBALCATCHFIX" : "p!c",
 	"GLOBALPREFIX": "phz!",
 	"INVITEURL" : "",
 	"HINTSTART" : "The pokémon is",

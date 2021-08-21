@@ -6,7 +6,7 @@
 // light database to store catchfixes per server
 // - catchfix - sets the server's catchfix
 
-const {token, HOMEGUILD, HOMECATCHFIX, GLOBALCATCHFIX, GLOBALPREFIX, HINTSTART, INVITEURL, POKETWO_ID, DEBUG} = require("./config.json");
+const {token, HOMEGUILD, HOMECATCHFIX, GLOBALPREFIX, HINTSTART, INVITEURL, POKETWO_ID, DEBUG} = require("./config.json");
 const {POKEMONLIST} = require("./pokemon.json")
 
 const { Client, Intents, Permissions } = require('discord.js');
@@ -20,7 +20,7 @@ const underscore = /(\\_|_)/g
 client.on('messageCreate', async message => {
 	if ( message.author.id == POKETWO_ID || DEBUG) {
 		if ( message.content.startsWith(HINTSTART) ) {
-			var catchfix = await database.get(`${message.guild.id}c`) || GLOBALCATCHFIX
+			var catchfix = await database.get(`${message.guild.id}c`) || ""
 			var texts = check(message.content.substring(15,message.content.length-1),catchfix)
 			texts.forEach(text => {message.channel.send(text)})
 			return;
@@ -60,7 +60,7 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 			message.channel.send("Enter a hint to resolve!")
 			return;
 		}
-		var texts = check(args.join(" "), "")
+		var texts = check(args.join(" "))
 		texts.forEach(text => {message.channel.send(text)})
 		return;
 	} else if (command === "list") {
@@ -88,11 +88,11 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 			if(!(message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR))) {
 				return message.channel.send(`I'm sorry, ${message.author}. I'm afraid I can't do that.`)
 			}
-			if (args[0] === "----") { args[0] = "  " }
+			if (args[0] === "----") { args[0] = "" }
 			await database.set(`${message.guild.id}c`, args[0]);
-			return message.channel.send(`Successfully set catchfix to \`${args[0]}\``);
+			return message.channel.send(`Successfully set catchfix to \`${args[0]||"none"}\``);
 		}
-		return message.channel.send(`Catchfix is \`${await database.get(`${message.guild.id}c`) || GLOBALCATCHFIX}\`\nUse \`${await database.get(`${message.guild.id}p`) || GLOBALPREFIX}catchfix NewCatchfix\` to set a new one, or \`----\` to remove.`);
+		return message.channel.send(`Catchfix is \`${await database.get(`${message.guild.id}c`) || "none"}\`\nUse \`${await database.get(`${message.guild.id}p`) || GLOBALPREFIX}catchfix NewCatchfix\` to set a new one, or \`----\` to remove.`);
 	}
 });
 

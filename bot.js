@@ -20,8 +20,8 @@ const underscore = /(\\_|_)/g
 client.on('messageCreate', async message => {
 	if ( message.author.id == POKETWO_ID || DEBUG) {
 		if ( message.content.startsWith(HINTSTART) ) {
-			let respond = await database.get(`${message.guild.id}hauto`) || 1
-			if (respond == 0) {return;}
+			var respond = await database.get(`${message.guild.id}hauto`) || -1
+			if (respond == -1) {return;}
 
 			var catchfix = await database.get(`${message.guild.id}c`) || ""
 			var texts = check(message.content.substring(15,message.content.length-1),catchfix)
@@ -106,7 +106,7 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 				await database.set(`${message.guild.id}hauto`, 1);
 				return message.channel.send(`Successfully set automatic hint responding to: \`ON\` ✅`);
 			} else if (args[0] === "off") {
-				await database.set(`${message.guild.id}hauto`, 0);
+				await database.set(`${message.guild.id}hauto`, -1);
 				return message.channel.send(`Successfully set automatic responding to: \`OFF\` ❎`);
 			}
 		}
@@ -141,7 +141,13 @@ function  check (texto,catchfix,chunk) {
 		text = text.substr(text.lastIndexOf(" ")+1)
 		reg = new RegExp(text)
 		validmons = POKEMONLIST[text.length].filter((mon) => {return mon.match(reg)})
+		if (validmons.length == 0) {
+			text = text.substring(0,text.length-1)
+			reg = new RegExp(text)
+			validmons = POKEMONLIST[text.length].filter((mon) => {return mon.match(reg)})
+		}
 	}
+
 
 	if (chunk) {
 		chunk = validmons.join(", ")

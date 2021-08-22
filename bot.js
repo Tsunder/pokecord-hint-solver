@@ -20,10 +20,10 @@ const underscore = /(\\_|_)/g
 client.on('messageCreate', async message => {
 	if ( message.author.id == POKETWO_ID || DEBUG) {
 		if ( message.content.startsWith(HINTSTART) ) {
-			var respond = await database.get(`${message.guild.id}hauto`) || -1
+			var respond = await database.get(`${message.guild.id}hauto`) || 1
 			if (respond == -1) {return;}
 			var catchfix = await database.get(`${message.guild.id}cauto`) || 1
-			if ( !( catchfix === -1 ) ) { catchfix = await database.get(`${message.guild.id}c` || "") } else catchfix = "";
+			if ( catchfix === -1 ) {catchfix = ""} else { catchfix = await database.get(`${message.guild.id}c` || "") }
 			var texts = check(message.content.substring(15,message.content.length-1),catchfix)
 			texts.forEach(text => {message.channel.send(text)})
 			return;
@@ -109,8 +109,8 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 				return message.channel.send(`Successfully set hint message responding to: \`OFF\` ❎`);
 			}
 		}
-		var hauto = await database.get(`${message.guild.id}hauto`)
-		return message.channel.send(`Automatic hint message responding is currently: ${hauto === 0 ? "`OFF`❎" : "`ON` ✅"}\nUse \`${await database.get(`${message.guild.id}p`) || GLOBALPREFIX}togglehint on/off\` to change.`)
+		var hauto = await database.get(`${message.guild.id}hauto`) || 1
+		return message.channel.send(`Automatic hint message responding is currently: ${hauto === -1 ? "`OFF`❎" : "`ON` ✅"}\nUse \`${await database.get(`${message.guild.id}p`) || GLOBALPREFIX}togglehint on/off\` to change.`)
 	} else if ( command === `togglecatchfix`) {
 		if (args.length) {
 			if (!isModerator(message.member)) { return message.channel.send(`I'm sorry, ${message.author}. I'm afraid I can't do that.`) }

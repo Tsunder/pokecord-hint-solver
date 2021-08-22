@@ -22,8 +22,8 @@ client.on('messageCreate', async message => {
 		if ( message.content.startsWith(HINTSTART) ) {
 			var respond = await database.get(`${message.guild.id}hauto`) || -1
 			if (respond == -1) {return;}
-
-			var catchfix = await database.get(`${message.guild.id}c`) || ""
+			var catchfix = await database.get(`${message.guild.id}cauto`) || 1
+			if ( !( catchfix === -1 ) ) { catchfix = await database.get(`${message.guild.id}c` || "") }
 			var texts = check(message.content.substring(15,message.content.length-1),catchfix)
 			texts.forEach(text => {message.channel.send(text)})
 			return;
@@ -37,7 +37,7 @@ client.on('messageCreate', async message => {
 		} else {
 			const guildPrefix = await database.get(`${message.guild.id}p`);
 			if (message.content.startsWith(guildPrefix)) { prefix = guildPrefix }
-				else if (message.content.startsWith(`<@!${client.user.id}>`)) { prefix = `<@!${client.user.id}>`}
+			else if (message.content.startsWith(`<@!${client.user.id}>`) || message.content.startsWith(`<@${client.user.id}>`)) { prefix = `<@!${client.user.id}>`}
 		}
 		if (!prefix) return;
 		args = message.content.slice(prefix.length).trim().split(/\s+/);
@@ -52,7 +52,7 @@ client.on('messageCreate', async message => {
 		console.log(`pinged! ${client.ws.ping}ms`);
 	} else if (command === "help") {
 		message.channel.send(`The bot will automatically respond to poketwo's hint messages.\n
-Commands: help, invite, ping, solve, list, catchfix, prefix, togglehint\n
+Commands: help, invite, ping,\nsolve, list,\ncatchfix, prefix, togglecatchfix, togglehint\n
 Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 	} else if (command === "invite") {
 		message.channel.send("Invite me to your server!\n" +
@@ -104,14 +104,26 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 		if (args.length) {
 			if (args[0] === "on") {
 				await database.set(`${message.guild.id}hauto`, 1);
-				return message.channel.send(`Successfully set automatic hint responding to: \`ON\` ✅`);
+				return message.channel.send(`Successfully set hint message responding to: \`ON\` ✅`);
 			} else if (args[0] === "off") {
 				await database.set(`${message.guild.id}hauto`, -1);
-				return message.channel.send(`Successfully set automatic responding to: \`OFF\` ❎`);
+				return message.channel.send(`Successfully set hint message responding to: \`OFF\` ❎`);
 			}
 		}
 		var hauto = await database.get(`${message.guild.id}hauto`)
-		return message.channel.send(`Automatic hint responding is currently: ${hauto === 0 ? "`OFF`❎" : "`ON` ✅"}\nUse \`${await database.get(`${message.guild.id}p`) || GLOBALPREFIX}togglehint on/off\` to change.`)
+		return message.channel.send(`Automatic hint message responding is currently: ${hauto === 0 ? "`OFF`❎" : "`ON` ✅"}\nUse \`${await database.get(`${message.guild.id}p`) || GLOBALPREFIX}togglehint on/off\` to change.`)
+	} else if ( command === `togglecatchfix`) {
+		if (args.length) {
+			if (args[0].trim().toLowerCase() === "on") {
+				await database.set(`${message.guild.id}cauto`, 1);
+				return message.channel.send(`Successfully set catchfix prepending to: \`ON\` ✅`);
+			} else if (args[0].trim().toLowerCase() === "off") {
+				await database.set(`${message.guild.id}cauto`, -1);
+				return message.channel.send(`Successfully set catchfix prepending to: \`OFF\` ❎`);
+			}
+		}
+		var cauto = await database.get(`${message.guild.id}cauto`)
+		return message.channel.send(`Catchfix prepending is currently: ${cauto === -1 ? "`OFF`❎" : "`ON` ✅"}\nUse \`${await database.get(`${message.guild.id}p`) || GLOBALPREFIX}togglecatchfix on/off\` to change.`)
 
 	}
 

@@ -160,6 +160,8 @@ function  check (texto,catchfix,chunk) {
 
 
 	if (chunk) {
+		// this is a bad way to do it.
+		// please fix
 		chunk = validmons.join(", ")
 		return chunk.length>1950 ? [`${chunk.substring(0,1950)} and more...`] : [chunk]
 	}

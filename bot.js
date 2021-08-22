@@ -130,15 +130,15 @@ function  check (texto,catchfix,chunk) {
 	if (texto.length > 50) {
 		return ["Hint too long"]
 	}
-	var text = texto.replace(underscore,".").substring(0,POKEMONLIST.length-1).toLowerCase();
+	var text = texto.replace(underscore,".").substring(0,POKEMONLIST.length-1).toLowerCase().trim();
 	if (!POKEMONLIST[text.length].length) {
-		console.log(`No matches found for: ${texto}`)
+		console.log(`No matches found for: "${texto}"`)
 		return ["No matches found!"]
 	}
 	var reg = new RegExp(text)
 	var validmons = POKEMONLIST[text.length].filter((mon) => {return mon.match(reg)})
 	if (validmons.length == 0) {
-		text = text.substr(text.lastIndexOf(" ")+1)
+		text = text.substr(text.lastIndexOf(" ")+1, Math.max(text.indexOf(":"),text.length))
 		reg = new RegExp(text)
 		validmons = POKEMONLIST[text.length].filter((mon) => {return mon.match(reg)})
 		if (validmons.length == 0) {
@@ -154,7 +154,7 @@ function  check (texto,catchfix,chunk) {
 		return chunk.length>1950 ? [`${chunk.substring(0,1950)} and more...`] : [chunk]
 	}
 	if (validmons.length == 0) {
-		console.log(`No matches found for: ${texto}`)
+		console.log(`No matches found for: "${texto}"`)
 		return ["No matches found!"]
 	}
 

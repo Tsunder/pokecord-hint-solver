@@ -23,7 +23,7 @@ client.on('messageCreate', async message => {
 			var respond = await database.get(`${message.guild.id}hauto`) || -1
 			if (respond == -1) {return;}
 			var catchfix = await database.get(`${message.guild.id}cauto`) || 1
-			if ( !( catchfix === -1 ) ) { catchfix = await database.get(`${message.guild.id}c` || "") }
+			if ( !( catchfix === -1 ) ) { catchfix = await database.get(`${message.guild.id}c` || "") } else catchfix = "";
 			var texts = check(message.content.substring(15,message.content.length-1),catchfix)
 			texts.forEach(text => {message.channel.send(text)})
 			return;
@@ -93,15 +93,14 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 			if(!isModerator(message.member)) {
 				return message.channel.send(`I'm sorry, ${message.author}. I'm afraid I can't do that.`)
 			}
-			if (args[0] === "----") { args[0] = "" }
 			await database.set(`${message.guild.id}c`, args[0]);
-			return message.channel.send(`Successfully set catchfix to \`${args[0]||"none"}\``);
+			return message.channel.send(`Successfully set catchfix to \`${args[0]}\``);
 		}
-		return message.channel.send(`Catchfix is \`${await database.get(`${message.guild.id}c`) || "none"}\`\nUse \`${await database.get(`${message.guild.id}p`) || GLOBALPREFIX}catchfix NewCatchfix\` to set a new one, or \`----\` to remove.`);
+		return message.channel.send(`Catchfix is \`${await database.get(`${message.guild.id}c`) || "none"}\`\nUse \`${await database.get(`${message.guild.id}p`) || GLOBALPREFIX}catchfix NewCatchfix\` to set a new one.`);
 	} else if ( command === `togglehint`) {
 		// Automatic hint responding
-		if (!isModerator(message.member)) { return message.channel.send(`I'm sorry, ${message.author}. I'm afraid I can't do that.`) }
 		if (args.length) {
+			if (!isModerator(message.member)) { return message.channel.send(`I'm sorry, ${message.author}. I'm afraid I can't do that.`) }
 			if (args[0] === "on") {
 				await database.set(`${message.guild.id}hauto`, 1);
 				return message.channel.send(`Successfully set hint message responding to: \`ON\` ✅`);
@@ -114,6 +113,7 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 		return message.channel.send(`Automatic hint message responding is currently: ${hauto === 0 ? "`OFF`❎" : "`ON` ✅"}\nUse \`${await database.get(`${message.guild.id}p`) || GLOBALPREFIX}togglehint on/off\` to change.`)
 	} else if ( command === `togglecatchfix`) {
 		if (args.length) {
+			if (!isModerator(message.member)) { return message.channel.send(`I'm sorry, ${message.author}. I'm afraid I can't do that.`) }
 			if (args[0].trim().toLowerCase() === "on") {
 				await database.set(`${message.guild.id}cauto`, 1);
 				return message.channel.send(`Successfully set catchfix prepending to: \`ON\` ✅`);
@@ -124,9 +124,7 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 		}
 		var cauto = await database.get(`${message.guild.id}cauto`)
 		return message.channel.send(`Catchfix prepending is currently: ${cauto === -1 ? "`OFF`❎" : "`ON` ✅"}\nUse \`${await database.get(`${message.guild.id}p`) || GLOBALPREFIX}togglecatchfix on/off\` to change.`)
-
 	}
-
 });
 
 client.once( 'ready', () => {

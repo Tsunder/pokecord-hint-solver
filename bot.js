@@ -20,6 +20,9 @@ const underscore = /(\\_|_)/g
 client.on('messageCreate', async message => {
 	if ( message.author.id == POKETWO_ID || DEBUG) {
 		if ( message.content.startsWith(HINTSTART) ) {
+			let respond = await database.get(`${message.guild.id}hauto`) || 1
+			if (respond == 0) {return;}
+
 			var catchfix = await database.get(`${message.guild.id}c`) || ""
 			var texts = check(message.content.substring(15,message.content.length-1),catchfix)
 			texts.forEach(text => {message.channel.send(text)})
@@ -33,9 +36,9 @@ client.on('messageCreate', async message => {
 			prefix = GLOBALPREFIX;
 		} else {
 			const guildPrefix = await database.get(`${message.guild.id}p`);
-			if (message.content.startsWith(guildPrefix)) prefix = guildPrefix;
+			if (message.content.startsWith(guildPrefix)) { prefix = guildPrefix }
+				else if (message.content.startsWith(`<@!${client.user.id}>`)) { prefix = `<@!${client.user.id}>`}
 		}
-
 		if (!prefix) return;
 		args = message.content.slice(prefix.length).trim().split(/\s+/);
 	} else {
@@ -49,13 +52,13 @@ client.on('messageCreate', async message => {
 		console.log(`pinged! ${client.ws.ping}ms`);
 	} else if (command === "help") {
 		message.channel.send(`The bot will automatically respond to poketwo's hint messages.\n
-Commands: help, invite, ping, solve, list, catchfix, prefix\n
+Commands: help, invite, ping, solve, list, catchfix, prefix, togglehint\n
 Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 	} else if (command === "invite") {
 		message.channel.send("Invite me to your server!\n" +
 			INVITEURL)
 	} else if (command === "solve") {
-		//no args, define the command
+		// lists first several matching pokemon
 		if (args.length == 0) {
 			message.channel.send("Enter a hint to resolve!")
 			return;
@@ -64,7 +67,7 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 		texts.forEach(text => {message.channel.send(text)})
 		return;
 	} else if (command === "list") {
-		//no args, define the command
+		// list all matching pokemon to the hint
 		if (args.length == 0) {
 			message.channel.send("Enter a hint to list all matching pokemon.")
 			return;
@@ -73,8 +76,9 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 		texts.forEach(text => {message.channel.send(text)})
 		return;
 	} else if (command === "prefix") {
+		//command prefix
 		if (args.length) {
-			if(!(message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR))) {
+			if(!isModerator(message.member)) {
 				return message.channel.send(`I'm sorry, ${message.author}. I'm afraid I can't do that.`)
 			}
 			await database.set(`${message.guild.id}p`, args[0]);
@@ -84,8 +88,9 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 		return message.channel.send(`Prefix is \`${prefix}\`\nUse \`${prefix}prefix NewPrefix\` to set a new one.`);
 
 	} else if (command === "catchfix") {
+		// prepend hint response with the .catch of the server
 		if (args.length) {
-			if(!(message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR))) {
+			if(!isModerator(message.member)) {
 				return message.channel.send(`I'm sorry, ${message.author}. I'm afraid I can't do that.`)
 			}
 			if (args[0] === "----") { args[0] = "" }
@@ -93,7 +98,23 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 			return message.channel.send(`Successfully set catchfix to \`${args[0]||"none"}\``);
 		}
 		return message.channel.send(`Catchfix is \`${await database.get(`${message.guild.id}c`) || "none"}\`\nUse \`${await database.get(`${message.guild.id}p`) || GLOBALPREFIX}catchfix NewCatchfix\` to set a new one, or \`----\` to remove.`);
+	} else if ( command === `togglehint`) {
+		// Automatic hint responding
+		if (!isModerator(message.member)) { return message.channel.send(`I'm sorry, ${message.author}. I'm afraid I can't do that.`) }
+		if (args.length) {
+			if (args[0] === "on") {
+				await database.set(`${message.guild.id}hauto`, 1);
+				return message.channel.send(`Successfully set automatic hint responding to: \`ON\` ✅`);
+			} else if (args[0] === "off") {
+				await database.set(`${message.guild.id}hauto`, 0);
+				return message.channel.send(`Successfully set automatic responding to: \`OFF\` ❎`);
+			}
+		}
+		var hauto = await database.get(`${message.guild.id}hauto`)
+		return message.channel.send(`Automatic hint responding is currently: ${hauto === 0 ? "`OFF`❎" : "`ON` ✅"}\nUse \`${await database.get(`${message.guild.id}p`) || GLOBALPREFIX}togglehint on/off\` to change.`)
+
 	}
+
 });
 
 client.once( 'ready', () => {
@@ -106,23 +127,20 @@ function  check (texto,catchfix,chunk) {
 	// and convert to lowercase
 	//texto = texto.substring(0,POKEMONLIST.length-1).toLowerCase();
 	//replacing _ for regex
-	if (texto.length > 100) {
+	if (texto.length > 50) {
 		return ["Hint too long"]
 	}
 	var text = texto.replace(underscore,".").substring(0,POKEMONLIST.length-1).toLowerCase();
+	if (!POKEMONLIST[text.length].length) {
+		console.log(`No matches found for: ${texto}`)
+		return ["No matches found!"]
+	}
 	var reg = new RegExp(text)
 	var validmons = POKEMONLIST[text.length].filter((mon) => {return mon.match(reg)})
 	if (validmons.length == 0) {
-		if (text.length > 14) {
-			text = texto.substr(texto.lastIndexOf(" ")+1)
-		}
-		reg = new RegExp(text.replace(underscore,"."))
+		text = text.substr(text.lastIndexOf(" ")+1)
+		reg = new RegExp(text)
 		validmons = POKEMONLIST[text.length].filter((mon) => {return mon.match(reg)})
-		if (validmons.length == 0) {
-			text = text.substring(0,text.length-1);
-			reg = new RegExp(text.replace(underscore,"."))
-			validmons = POKEMONLIST[text.length].filter((mon) => {return mon.match(reg)})
-		}
 	}
 
 	if (chunk) {
@@ -154,6 +172,22 @@ function toTitleCase(str) {
       return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     }
   );
+}
+
+function isModerator(member) {
+	var isModerator = false
+	var permlist = [
+		Permissions.FLAGS.ADMINISTRATOR,
+		Permissions.FLAGS.MANAGE_CHANNELS,
+		Permissions.FLAGS.MANAGE_MESSAGES
+		]
+		permlist.forEach(perm => {
+			if(member.permissions.has(perm)) {
+				isModerator = true;
+				return
+			}
+		})
+	return isModerator
 }
 
 client.login(token)

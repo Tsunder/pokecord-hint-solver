@@ -24,7 +24,8 @@ client.on('messageCreate', async message => {
 			if (respond == -1) {return;}
 			var catchfix = await database.get(`${message.guild.id}cauto`) || 1
 			if ( catchfix === -1 ) {catchfix = ""} else { catchfix = await database.get(`${message.guild.id}c` || "") }
-			var texts = check(message.content.substring(15,message.content.length-1),catchfix)
+			var spoiler =  await database.get(`${message.guild.id}spoiler`) || -1
+			var texts = check(message.content.substring(15,message.content.length-1),catchfix, false, spoiler)
 			texts.forEach(text => {message.channel.send(text)})
 			return;
 			}
@@ -132,7 +133,7 @@ client.once( 'ready', () => {
 });
 
 //returns an array of strings that potentially match the hint provided
-function  check (texto,catchfix,chunk) {
+function  check (texto,catchfix,chunk, spoiler) {
 	// limit the text to only as long as the longest pokemon name we have
 	// and convert to lowercase
 	//texto = texto.substring(0,POKEMONLIST.length-1).toLowerCase();
@@ -173,8 +174,12 @@ function  check (texto,catchfix,chunk) {
 	var response = []
 
 	var out = validmons.slice(0,4)
-
-	out.forEach(line => {response.push(`${catchfix||""} ${toTitleCase(line)}`)})
+	if (spoiler) {
+		out.forEach(line => {response.push(`\|\|${catchfix||""} ${toTitleCase(line)}\|\|`)})
+	}
+	else {
+		out.forEach(line => {response.push(`${catchfix||""} ${toTitleCase(line)}`)})
+	}
 	if (validmons.length > 4) {
 		response.push(`Showing first 4/${validmons.length} matches.`)
 	}

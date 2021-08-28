@@ -148,11 +148,10 @@ function  check (texto,catchfix,chunk) {
 	var reg = new RegExp(text)
 	var validmons = POKEMONLIST[text.length].filter((mon) => {return mon.match(reg)})
 	if (validmons.length == 0) {
-		text = text.substr(text.lastIndexOf(" ")+1, Math.max(text.indexOf(":"),text.length))
-		reg = new RegExp(text)
-		validmons = POKEMONLIST[text.length].filter((mon) => {return mon.match(reg)})
+		reg = new RegExp(text.substring(0,text.length-1))
+		validmons = POKEMONLIST[text.length-1].filter((mon) => {return mon.match(reg)})
 		if (validmons.length == 0) {
-			text = text.substring(0,text.length-1)
+			text = text.substr(text.lastIndexOf(" ")+1, Math.max(text.indexOf(":"),text.length))
 			reg = new RegExp(text)
 			validmons = POKEMONLIST[text.length].filter((mon) => {return mon.match(reg)})
 		}

@@ -21,17 +21,20 @@ const MAXGUILDS = 1000;
 const underscore = /(\\_|_)/g
 
 client.on('messageCreate', async message => {
-	if ( message.author.id == POKETWO_ID || DEBUG) {
-		if ( message.content.startsWith(HINTSTART) ) {
-			var respond = await database.get(`${message.guild.id}hauto`) || 1
-			if (respond == -1) {return;}
-			var catchfix = await database.get(`${message.guild.id}cauto`) || 1
-			if ( catchfix === -1 ) {catchfix = ""} else { catchfix = await database.get(`${message.guild.id}c` || "") }
-			var texts = check(message.content.substring(15,message.content.length-1),catchfix, false, respond == 2)
-			texts.forEach(text => {message.channel.send(text)})
-			return;
+	if (message.author.bot) {
+		if ( message.author.id == POKETWO_ID) {
+			if ( message.content.startsWith(HINTSTART) ) {
+				var respond = await database.get(`${message.guild.id}hauto`) || 1
+				if (respond == -1) {return;}
+				var catchfix = await database.get(`${message.guild.id}cauto`) || 1
+				if ( catchfix === -1 ) {catchfix = ""} else { catchfix = await database.get(`${message.guild.id}c` || "") }
+				var texts = check(message.content.substring(15,message.content.length-1),catchfix, false, respond == 2)
+				texts.forEach(text => {message.channel.send(text)})
+				return;
 			}
 		}
+		return;
+	}
 	let args;
 	if (message.guild) {
 		let prefix;
@@ -63,10 +66,12 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 	} else if (command === "invite") {
 		guildlimitwarning();
 		if(client.guilds.size > MAXGUILDS) {
-			message.channel.send(`Sorry, I've reached my current maximum number of servers.`)
+			message.author.send(`Sorry, I've reached my current maximum number of servers.`)
+			message.channel.send(`I've sent you a direct message!`)
 			return
 		}
-		message.channel.send(`Invite me to your server!\n${INVITEURL}`)
+		message.author.send(`Invite me to your server!\n${INVITEURL}`)
+		message.channel.send(`I've sent you a direct message!`)
 	} else if (command === "solve") {
 		// lists first several matching pokemon
 		if (args.length == 0) {

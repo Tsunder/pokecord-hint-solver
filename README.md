@@ -16,14 +16,30 @@ List of commands:
 #### Help
 Responds with help message.
 
+#### Info
+Posts User count, Server count, and source link.
+
 #### Invite
-Posts invite link.
+Sends the user a DM containing an invite link.
 
 #### solve
 Solves a given hint.
 
+Example: 
+
+`phz!solve M_w`
+returns
+`Mew`
+`Muk`
+
 #### list
-Posts all matching pokemon for a giving hint.
+Posts all matching pokemon.
+
+Example:
+
+`phz!solve M__` 
+returns
+`Mew, Muk`
 
 #### catchfix
 Shows and changes the catch command to prepend to hint solutions.

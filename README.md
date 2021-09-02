@@ -1,5 +1,5 @@
 # pokecord-hint-solver
-solves hint messages
+Simple bot for guessing pokemon by name.
 
 ## Invitation
 [Invite this bot to your server!](https://discord.com/api/oauth2/authorize?client_id=876704750480023584&permissions=3072&scope=bot)
@@ -7,22 +7,34 @@ solves hint messages
 ## Usage
 The bot will automatically respond to poketwo's messages that start with the hint message ("The pokémon is" by default)
 
-Use phz!help to bring up a help menu.
+Use `phz!help` to bring up a help menu.
 
-### Commands
+## Commands
 
 List of commands:
 
-#### Help
+### Help
 Responds with help message.
 
-#### Info
+### Info
 Posts User count, Server count, and source link.
 
-#### Invite
+### Invite
 Sends the user a DM containing an invite link.
 
-#### solve
+### prefix
+Shows and changes the bot's prefix. phz! is a global prefix and will always work.
+
+### catchfix
+Shows and changes the catch command to prepend to hint solutions.
+
+### togglecatchfix
+Enables or disables catch command prefixing to hint solutions.
+
+### togglehint
+Enables hint solving, disables hint solving, and puts spoilers around hint resolutions.
+
+### solve
 Solves a given hint.
 
 Example: 
@@ -32,7 +44,7 @@ returns
 `Mew`
 `Muk`
 
-#### list
+### list
 Posts all matching pokemon.
 
 Example:
@@ -41,17 +53,6 @@ Example:
 returns
 `Mew, Muk`
 
-#### catchfix
-Shows and changes the catch command to prepend to hint solutions.
-
-#### prefix
-Shows and changes the bot's prefix. phz! is a global prefix and will always work.
-
-#### togglecatchfix
-Enables or disables catch command prefixing to hint solutions.
-
-#### togglehint
-Enables or disables hint solving.
 
 ## Setup (hosting)
 
@@ -65,4 +66,6 @@ Token: bot token.
 
 
 ## Contributing
-This bot is meant to be simple and lightweight.
+This bot is meant to be simple and lightweight, and its single purpose is to guess pokemon names.
+
+Contributions should be clean and clear in what they do.

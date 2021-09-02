@@ -16,6 +16,8 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_
 const Keyv = require('keyv');
 const database = new Keyv('sqlite://./database.sqlite');
 
+const MAXGUILDS = 1000;
+
 const underscore = /(\\_|_)/g
 
 client.on('messageCreate', async message => {
@@ -59,12 +61,12 @@ Commands: \`\`\`help, info, invite, \ncatchfix, prefix, togglecatchfix, togglehi
 		message.channel.send(`Currently serving ${client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)} trainers in ${client.guilds.cache.size} regions.\n
 Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 	} else if (command === "invite") {
-		if(cllient.guilds.size > 99) {
-			message.channel.send("Sorry, I've reached my current limit of servers!")
-			return;
+		guildlimitwarning();
+		if(client.guilds.size > MAXGUILDS) {
+			message.channel.send(`Sorry, I've reached my current maximum number of servers.`)
+			return
 		}
-		message.channel.send("Invite me to your server!\n" +
-			INVITEURL)
+		message.channel.send(`Invite me to your server!\n${INVITEURL}`)
 	} else if (command === "solve") {
 		// lists first several matching pokemon
 		if (args.length == 0) {
@@ -143,7 +145,14 @@ client.once( 'ready', () => {
 	console.log("poke hint solver bot ready");
 	console.log(`Currently serving ${client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)} trainers in ${client.guilds.cache.size} regions.\n
 Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
+	guildlimitwarning()
 });
+
+function guildlimitwarning(){
+	if (client.guilds.size > 100) {
+			console.log(`Warning, bot is in ${client.guilds.size} servers!`)
+		}
+}
 
 //returns an array of strings that potentially match the hint provided
 function  check (texto,catchfix,chunk, spoiler) {

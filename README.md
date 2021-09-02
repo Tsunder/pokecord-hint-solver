@@ -22,19 +22,19 @@ Posts User count, Server count, and source link.
 ### Invite
 Sends the user a DM containing an invite link.
 
-### prefix
+### Prefix
 Shows and changes the bot's prefix. phz! is a global prefix and will always work.
 
-### catchfix
+### Catchfix
 Shows and changes the catch command to prepend to hint solutions.
 
-### togglecatchfix
+### Togglecatchfix
 Enables or disables catch command prefixing to hint solutions.
 
-### togglehint
+### Togglehint
 Enables hint solving, disables hint solving, and puts spoilers around hint resolutions.
 
-### solve
+### Solve
 Solves a given hint.
 
 Example: 
@@ -44,8 +44,8 @@ returns
 `Mew`
 `Muk`
 
-### list
-Posts all matching pokemon.
+### List
+Post all matching pokemon.
 
 Example:
 

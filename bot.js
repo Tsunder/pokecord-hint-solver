@@ -173,7 +173,13 @@ function  check (texto,catchfix,chunk, spoiler) {
 		console.log(`No matches found for: "${texto}"`)
 		return ["No matches found!"]
 	}
-	text = text.substr(0,/♀️|♂️/)
+	/* we'll define gender another day, for now, let's just put that weird text where it belongs.
+	let gender = text.search(/♀️|♂️/)
+	if (gender > 0) {
+		text = text.substr(0, gender)
+	}
+	*/
+
 	var reg = new RegExp(text)
 	var validmons = POKEMONLIST[text.length].filter((mon) => {return mon.match(reg)})
 	if (validmons.length == 0) {

@@ -169,15 +169,15 @@ function  check (texto,catchfix,chunk, spoiler) {
 		return ["Hint too long"]
 	}
 	var text = texto.replace(underscore,".").substring(0,POKEMONLIST.length-1).toLowerCase().trim();
-	text = text.replace(/♀|♂/,"");
 	if (!POKEMONLIST[text.length].length) {
 		console.log(`No matches found for: "${texto}"`)
 		return ["No matches found!"]
 	}
+	text = text.substr(0,/♀️|♂️/)
 	var reg = new RegExp(text)
 	var validmons = POKEMONLIST[text.length].filter((mon) => {return mon.match(reg)})
 	if (validmons.length == 0) {
-		console.log(`No basic matches for ${text}, checking ntext`)
+		console.log(`No basic matches for ${text} @ length ${text.length}, checking next`)
 		reg = new RegExp(text.substring(0,text.length-1))
 		validmons = POKEMONLIST[text.length-1].filter((mon) => {return mon.match(reg)})
 		if (validmons.length == 0) {

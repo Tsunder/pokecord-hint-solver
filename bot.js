@@ -169,6 +169,7 @@ function  check (texto,catchfix,chunk, spoiler) {
 		return ["Hint too long"]
 	}
 	var text = texto.replace(underscore,".").substring(0,POKEMONLIST.length-1).toLowerCase().trim();
+	text = text.replace(/♀|♂/,"");
 	if (!POKEMONLIST[text.length].length) {
 		console.log(`No matches found for: "${texto}"`)
 		return ["No matches found!"]
@@ -176,10 +177,12 @@ function  check (texto,catchfix,chunk, spoiler) {
 	var reg = new RegExp(text)
 	var validmons = POKEMONLIST[text.length].filter((mon) => {return mon.match(reg)})
 	if (validmons.length == 0) {
+		console.log(`No basic matches for ${text}, checking ntext`)
 		reg = new RegExp(text.substring(0,text.length-1))
 		validmons = POKEMONLIST[text.length-1].filter((mon) => {return mon.match(reg)})
 		if (validmons.length == 0) {
-			text = text.substr(text.lastIndexOf(" ")+1, Math.max(text.indexOf(":"),text.length))
+			console.log("still no matches...")
+			text = text.substr(text.lastIndexOf(" ")+1)
 			reg = new RegExp(text)
 			validmons = POKEMONLIST[text.length].filter((mon) => {return mon.match(reg)})
 		}

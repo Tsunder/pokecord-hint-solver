@@ -21,6 +21,9 @@ const MAXGUILDS = 1000;
 const underscore = /(\\_|_)/g
 
 client.on('messageCreate', async message => {
+	if (message.guild && !(message.channel.permissionsFor(message.guild.me).has("SEND_MESSAGES"))) {
+		return;
+	}
 	if (message.author.bot) {
 		if ( message.author.id == POKETWO_ID) {
 			if ( message.content.startsWith(HINTSTART) ) {

@@ -934,6 +934,7 @@
 			"alolan golem",
 			"autumn eevee",
 			"crabominable",
+			"devil wooper",
 			"speed deoxys"
 		],
 		[
@@ -955,12 +956,15 @@
 			"autumn turtwig",
 			"autumn leafeon",
 			"defense deoxys",
+			"pumpkin togepi",
 			"rainy castform",
 			"sandy wormadam",
 			"sensu oricorio",
+			"shadow xerneas",
 			"snowy castform",
 			"sunny castform",
-			"trash wormadam"
+			"trash wormadam",
+			"vampire raichu"
 
 		],
 		[
@@ -980,6 +984,7 @@
 			"alolan sandslash",
 			"autumn bulbasaur",
 			"complete zygarde",
+			"devil jigglypuff",
 			"galarian corsola",
 			"galarian linoone",
 			"galarian moltres",
@@ -1000,21 +1005,29 @@
 			"galarian zigzagoon"
 		],
 		[
+			"candy corn cutiefly",
 			"galarian darmanitan",
 			"galarian farfetch'd"
 		],
-		[],
+		[
+			"frankenstein psyduck"
+		],
 		[
 			"blue-striped basculin"
 		],
-		[],
-		[],
-		[],
-		[],
+		[
+			"ghost king blacephalon"
+		],
 		[],
 		[],
 		[
-			"galarian darmanitan zen mode"
+			"jack-o-lantern chandelure"
+		],
+		[],
+		[],
+		[
+			"galarian darmanitan zen mode",
+			"sandshrew of the sarcophagus"
 		]
 	]
 }

@@ -32,7 +32,7 @@ client.on('messageCreate', async message => {
 				var catchfix = await database.get(`${message.guild.id}cauto`) || 1
 				if ( catchfix === -1 ) {catchfix = ""} else { catchfix = await database.get(`${message.guild.id}c` || "") }
 				var texts = check(message.content.substring(15,message.content.length-1),catchfix, false, respond == 2)
-				texts.forEach(text => {message.channel.send(text)})
+				texts.forEach(text => {sendMessage(message.channel,text)})
 				return;
 			}
 		}
@@ -57,95 +57,95 @@ client.on('messageCreate', async message => {
 
 	const command = args.shift().toLowerCase();
 	if(command === "ping")	{
-		message.channel.send(`${client.ws.ping}ms.`);
+		sendMessage(message.channel,`${client.ws.ping}ms.`);
 		console.log(`pinged! ${client.ws.ping}ms`);
 	} else if (command === "help") {
-		message.channel.send(`The bot will automatically respond to poketwo's hint messages.\n
+		sendMessage(message.channel,`The bot will automatically respond to poketwo's hint messages.\n
 Commands: \`\`\`help, info, invite, \ncatchfix, prefix, togglecatchfix, togglehint, \nping, solve, list\`\`\``
 )
 	} else if (command === "info") {
-		message.channel.send(`Currently serving ${client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)} trainers in ${client.guilds.cache.size} regions.\n
+		sendMessage(message.channel,`Currently serving ${client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)} trainers in ${client.guilds.cache.size} regions.\n
 Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 	} else if (command === "invite") {
 		guildlimitwarning();
 		if(client.guilds.size > MAXGUILDS) {
-			message.author.send(`Sorry, I've reached my current maximum number of servers.`)
-			message.channel.send(`I've sent you a direct message!`)
+			message.author.send(`Sorry, I've reached my current maximum number of servers.`).catch(errorCatch)
+			sendMessage(message.channel,`I've sent you a direct message!`)
 			return
 		}
-		message.author.send(`Invite me to your server!\n${INVITEURL}`)
-		message.channel.send(`I've sent you a direct message!`)
+		message.author.send(`Invite me to your server!\n${INVITEURL}`).catch(errorCatch)
+		sendMessage(message.channel,`I've sent you a direct message!`)
 	} else if (command === "solve") {
 		// lists first several matching pokemon
 		if (args.length == 0) {
-			message.channel.send("Enter a hint to resolve!")
+			sendMessage(message.channel,"Enter a hint to resolve!")
 			return;
 		}
 		var texts = check(args.join(" "))
-		texts.forEach(text => {message.channel.send(text)})
+		texts.forEach(text => {sendMessage(message.channel,text)})
 		return;
 	} else if (command === "list") {
 		// list all matching pokemon to the hint
 		if (args.length == 0) {
-			message.channel.send("Enter a hint to list all matching pokemon.")
+			sendMessage(message.channel,"Enter a hint to list all matching pokemon.")
 			return;
 		}
 		var texts = check(args.join(" "),"", true)
-		texts.forEach(text => {message.channel.send(text)})
+		texts.forEach(text => {sendMessage(message.channel,text)})
 		return;
 	} else if (command === "prefix") {
 		//command prefix
 		if (args.length) {
 			if(!isModerator(message.member)) {
-				return message.channel.send(`I'm sorry, ${message.author}. I'm afraid I can't do that.`)
+				return sendMessage(message.channel,`I'm sorry, ${message.author}. I'm afraid I can't do that.`)
 			}
 			await database.set(`${message.guild.id}p`, args[0]);
-			return message.channel.send(`Successfully set prefix to \`${args[0]}\``);
+			return sendMessage(message.channel,`Successfully set prefix to \`${args[0]}\``);
 		}
 		let prefix = await database.get(`${message.guild.id}p`) || GLOBALPREFIX;
-		return message.channel.send(`Prefix is \`${prefix}\`\nUse \`${prefix}prefix NewPrefix\` to set a new one.`);
+		return sendMessage(message.channel,`Prefix is \`${prefix}\`\nUse \`${prefix}prefix NewPrefix\` to set a new one.`);
 
 	} else if (command === "catchfix") {
 		// prepend hint response with the .catch of the server
 		if (args.length) {
 			if(!isModerator(message.member)) {
-				return message.channel.send(`I'm sorry, ${message.author}. I'm afraid I can't do that.`)
+				return sendMessage(message.channel,`I'm sorry, ${message.author}. I'm afraid I can't do that.`)
 			}
 			await database.set(`${message.guild.id}c`, args[0]);
-			return message.channel.send(`Successfully set catchfix to \`${args[0]}\``);
+			return sendMessage(message.channel,`Successfully set catchfix to \`${args[0]}\``);
 		}
-		return message.channel.send(`Catchfix is \`${await database.get(`${message.guild.id}c`) || "none"}\`\nUse \`${await database.get(`${message.guild.id}p`) || GLOBALPREFIX}catchfix NewCatchfix\` to set a new one.`);
+		return sendMessage(message.channel,`Catchfix is \`${await database.get(`${message.guild.id}c`) || "none"}\`\nUse \`${await database.get(`${message.guild.id}p`) || GLOBALPREFIX}catchfix NewCatchfix\` to set a new one.`);
 	} else if ( command === `togglehint`) {
 		// Automatic hint responding
 		if (args.length) {
-			if (!isModerator(message.member)) { return message.channel.send(`I'm sorry, ${message.author}. I'm afraid I can't do that.`) }
+			if (!isModerator(message.member)) { return sendMessage(message.channel,`I'm sorry, ${message.author}. I'm afraid I can't do that.`) }
 			if (args[0] === "on") {
 				await database.set(`${message.guild.id}hauto`, 1);
-				return message.channel.send(`Successfully set hint message responding to: \`ON\` ✅`);
+				return sendMessage(message.channel,`Successfully set hint message responding to: \`ON\` ✅`);
 			} else if (args[0] === "off") {
 				await database.set(`${message.guild.id}hauto`, -1);
-				return message.channel.send(`Successfully set hint message responding to: \`OFF\` ❎`);
+				return sendMessage(message.channel,`Successfully set hint message responding to: \`OFF\` ❎`);
 			} else if (args[0] === "spoiler") {
 				await database.set(`${message.guild.id}hauto`, 2);
-				return message.channel.send(`Successfully set hint message responding to: \`SPOILERED\` ✅`);
+				return sendMessage(message.channel,`Successfully set hint message responding to: \`SPOILERED\` ✅`);
 			}
 		}
 		var hauto = await database.get(`${message.guild.id}hauto`) || 1
 		var status = hauto === -1 ? "`OFF`❎" : hauto == 1 ? "`ON`✅" : "`SPOILERED`✅"
-		return message.channel.send(`Automatic hint message responding is currently: ${status}\nUse \`${await database.get(`${message.guild.id}p`) || GLOBALPREFIX}togglehint on/off/spoiler\` to change.`)
+		return sendMessage(message.channel,`Automatic hint message responding is currently: ${status}\nUse \`${await database.get(`${message.guild.id}p`) || GLOBALPREFIX}togglehint on/off/spoiler\` to change.`)
 	} else if ( command === `togglecatchfix`) {
 		if (args.length) {
-			if (!isModerator(message.member)) { return message.channel.send(`I'm sorry, ${message.author}. I'm afraid I can't do that.`) }
+			if (!isModerator(message.member)) { return sendMessage(message.channel,`I'm sorry, ${message.author}. I'm afraid I can't do that.`) }
 			if (args[0].trim().toLowerCase() === "on") {
 				await database.set(`${message.guild.id}cauto`, 1);
-				return message.channel.send(`Successfully set catchfix prepending to: \`ON\` ✅`);
+				return sendMessage(message.channel,`Successfully set catchfix prepending to: \`ON\` ✅`);
 			} else if (args[0].trim().toLowerCase() === "off") {
 				await database.set(`${message.guild.id}cauto`, -1);
-				return message.channel.send(`Successfully set catchfix prepending to: \`OFF\` ❎`);
+				return sendMessage(message.channel,`Successfully set catchfix prepending to: \`OFF\` ❎`);
 			}
 		}
 		var cauto = await database.get(`${message.guild.id}cauto`)
-		return message.channel.send(`Catchfix prepending is currently: ${cauto === -1 ? "`OFF`❎" : "`ON` ✅"}\nUse \`${await database.get(`${message.guild.id}p`) || GLOBALPREFIX}togglecatchfix on/off\` to change.`)
+		return sendMessage(message.channel,`Catchfix prepending is currently: ${cauto === -1 ? "`OFF`❎" : "`ON` ✅"}\nUse \`${await database.get(`${message.guild.id}p`) || GLOBALPREFIX}togglecatchfix on/off\` to change.`)
 	}
 });
 
@@ -250,5 +250,13 @@ function isModerator(member) {
 		})
 	return isModerator
 }
+
+function sendMessage(channel,payload) {
+	channel.send(payload).catch(errorCatch)
+}
+
+function errorCatch(error) {
+		console.error('Error: ', error)
+	}
 
 client.login(token)

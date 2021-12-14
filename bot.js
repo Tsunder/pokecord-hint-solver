@@ -14,7 +14,7 @@ const database = new Keyv('sqlite://./database.sqlite');
 
 const MAXGUILDS = 1000;
 
-const underscore = /(\\_|_)/g
+const specialchars = /(\\_|_|\*)/g
 //this whole method seems inefficient
 client.on('messageCreate', async message => {
 	if (message.guild && !(message.channel.permissionsFor(message.guild.me).has("SEND_MESSAGES"))) {
@@ -27,7 +27,7 @@ client.on('messageCreate', async message => {
 				if (respond == -1) {return;}
 				var catchfix = await database.get(`${message.guild.id}cauto`) || 1
 				if ( catchfix === -1 ) {catchfix = ""} else { catchfix = await database.get(`${message.guild.id}c` || "") }
-				var texts = check(message.content.substring(15,message.content.length-1),catchfix, false, respond == 2)
+				var texts = check(message.content.toLowerCase().substring(15,message.content.length-1),catchfix, false, respond == 2)
 				texts.forEach(text => {sendMessage(message.channel,text)})
 				return;
 			}
@@ -169,7 +169,7 @@ function  check (texto,catchfix,chunk, spoiler) {
 	if (texto.length > 50) {
 		return ["Hint too long"]
 	}
-	var text = texto.replace(underscore,".").substring(0,POKEMONLIST.length-1).trim();
+	var text = texto.replace(specialchars,".").substring(0,POKEMONLIST.length-1).trim();
 	if (!POKEMONLIST[text.length].length) {
 		console.log(`No matches found for: "${texto}"`)
 		return ["No matches found!"]

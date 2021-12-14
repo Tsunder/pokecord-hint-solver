@@ -35,7 +35,7 @@ client.on('messageCreate', async message => {
 		return;
 	}
 	let args;
-	if (message.inGuild()) {
+	if (message.guild) {
 		let prefix;
 	//alternatively do localecompare sensitivity: base
 		var messageText = message.content.toLowerCase();

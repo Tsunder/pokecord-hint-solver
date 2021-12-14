@@ -1,11 +1,7 @@
 //
 // todo:
-// slash commands? or mentions?
-// - help - list commands and their descriptions
-// - invite - DM the user with an invite? or post as a response
-// light database to store catchfixes per server
-// - catchfix - sets the server's catchfix
-//"sharding" refactor
+// a. "sharding" refactor
+// b. make it work in DMs
 
 const {token, GLOBALPREFIX, HINTSTART, INVITEURL, POKETWO_ID, DEBUG} = require("./config.json");
 const {POKEMONLIST} = require("./pokemon.json")
@@ -18,8 +14,9 @@ const database = new Keyv('sqlite://./database.sqlite');
 
 const MAXGUILDS = 1000;
 
-const underscore = /(\\_|_)/g
-
+//maybe just make this "everythin gnot alphanumeric + space?"
+const specialchars = /(\\_|_|\*|\\\*|\^|\?)/g
+//this whole method seems inefficient
 client.on('messageCreate', async message => {
 	if (message.guild && !(message.channel.permissionsFor(message.guild.me).has("SEND_MESSAGES"))) {
 		return;
@@ -31,7 +28,7 @@ client.on('messageCreate', async message => {
 				if (respond == -1) {return;}
 				var catchfix = await database.get(`${message.guild.id}cauto`) || 1
 				if ( catchfix === -1 ) {catchfix = ""} else { catchfix = await database.get(`${message.guild.id}c` || "") }
-				var texts = check(message.content.substring(15,message.content.length-1),catchfix, false, respond == 2)
+				var texts = check(message.content.toLowerCase().substring(15,message.content.length-1),catchfix, false, respond == 2)
 				texts.forEach(text => {sendMessage(message.channel,text)})
 				return;
 			}
@@ -41,21 +38,23 @@ client.on('messageCreate', async message => {
 	let args;
 	if (message.guild) {
 		let prefix;
-		if (message.content.startsWith(GLOBALPREFIX)) {
+	//alternatively do localecompare sensitivity: base
+		var messageText = message.content.toLowerCase();
+		if (messageText.startsWith(GLOBALPREFIX)) {
 			prefix = GLOBALPREFIX;
 		} else {
 			const guildPrefix = await database.get(`${message.guild.id}p`);
-			if (message.content.startsWith(guildPrefix)) { prefix = guildPrefix }
-			else if (message.content.startsWith(`<@!${client.user.id}>`) || message.content.startsWith(`<@${client.user.id}>`)) { prefix = `<@!${client.user.id}>`}
+			if (messageText.startsWith(guildPrefix)) { prefix = guildPrefix }
+			else if (messageText.startsWith(`<@!${client.user.id}>`) || messageText.startsWith(`<@${client.user.id}>`)) { prefix = `<@!${client.user.id}>`}
 		}
 		if (!prefix) return;
-		args = message.content.slice(prefix.length).trim().split(/\s+/);
+		args = messageText.slice(prefix.length).trim().split(/\s+/);
 	} else {
-		const slice = message.content.startsWith(GLOBALPREFIX) ? GLOBALPREFIX.length : 0;
-		args = message.content.slice(slice).split(/\s+/);
+		const slice = message.content.toLowerCase().startsWith(GLOBALPREFIX) ? GLOBALPREFIX.length : 0;
+		args = message.content.toLowerCase().slice(slice).split(/\s+/);
 	}
 
-	const command = args.shift().toLowerCase();
+	const command = args.shift();
 	if(command === "ping")	{
 		sendMessage(message.channel,`${client.ws.ping}ms.`);
 		console.log(`pinged! ${client.ws.ping}ms`);
@@ -136,10 +135,10 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 	} else if ( command === `togglecatchfix`) {
 		if (args.length) {
 			if (!isModerator(message.member)) { return sendMessage(message.channel,`I'm sorry, ${message.author}. I'm afraid I can't do that.`) }
-			if (args[0].trim().toLowerCase() === "on") {
+			if (args[0].trim() === "on") {
 				await database.set(`${message.guild.id}cauto`, 1);
 				return sendMessage(message.channel,`Successfully set catchfix prepending to: \`ON\` ✅`);
-			} else if (args[0].trim().toLowerCase() === "off") {
+			} else if (args[0].trim() === "off") {
 				await database.set(`${message.guild.id}cauto`, -1);
 				return sendMessage(message.channel,`Successfully set catchfix prepending to: \`OFF\` ❎`);
 			}
@@ -171,7 +170,7 @@ function  check (texto,catchfix,chunk, spoiler) {
 	if (texto.length > 50) {
 		return ["Hint too long"]
 	}
-	var text = texto.replace(underscore,".").substring(0,POKEMONLIST.length-1).toLowerCase().trim();
+	var text = texto.replace(specialchars,".").substring(0,POKEMONLIST.length-1).trim();
 	if (!POKEMONLIST[text.length].length) {
 		console.log(`No matches found for: "${texto}"`)
 		return ["No matches found!"]

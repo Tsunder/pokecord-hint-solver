@@ -14,7 +14,8 @@ const database = new Keyv('sqlite://./database.sqlite');
 
 const MAXGUILDS = 1000;
 
-const specialchars = /(\\_|_|\*)/g
+//maybe just make this "everythin gnot alphanumeric + space?"
+const specialchars = /(\\_|_|\*|\\\*|\^|\?)/g
 //this whole method seems inefficient
 client.on('messageCreate', async message => {
 	if (message.guild && !(message.channel.permissionsFor(message.guild.me).has("SEND_MESSAGES"))) {

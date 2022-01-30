@@ -194,9 +194,9 @@ async function refreshGuildsDatabase () {
 	//go through remaining list of guilds the bot is currently in, these are all new guilds
 	//add bot to guilds
 	var newGuilds = client.guilds.cache.map(guild => guild.id) // does this even work
-
+	//newGuilds.push(123) //test guild IDs
 	var oldGuilds = await database.get(`guildList`) || []
-	
+	//oldGuilds.push(321) //test guild IDs
 	oldGuilds.forEach(async oldID => {
 		if (newGuilds.indexOf(oldID) > -1) {
 			newGuilds.splice(newGuilds.indexOf(oldID),1)

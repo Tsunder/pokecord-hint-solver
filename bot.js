@@ -151,15 +151,15 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 });
 
 client.on('guildDelete', async guild => {removeGuild(guild.id)});
-async function removeGuild(guild) {
+async function removeGuild(guildID) {
 	console.log("Now leaving guild: " + guildID)	
 
 	await database.delete(`${guildID}p`);
 	await database.delete(`${guildID}c`);
 	await database.delete(`${guildID}hauto`);
 	await database.delete(`${guildID}cauto`);
-	//guildList.pop(guild.id);
-	//await database.set('guildList', guildList)
+	guildList.splice(guildID);
+	await database.set('guildList', guildList)
 }
 
 client.on('guildCreate', async guild => {addGuild(guild.id)});
@@ -179,7 +179,6 @@ client.once( 'ready', async () => {
 Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 	await refreshGuildsDatabase()
 	guildlimitwarning()
-
 });
 
 
@@ -194,27 +193,27 @@ async function refreshGuildsDatabase () {
 	//otherwise, remove it and its data from settings
 	//go through remaining list of guilds the bot is currently in, these are all new guilds
 	//add bot to guilds
-	var newGuilds = client.guilds.cache.map(guild => guild.id)) // does this even work
+	var newGuilds = client.guilds.cache.map(guild => guild.id) // does this even work
 
-	console.log(newGuilds)
-	var oldGuilds = await database.get("guildList") || []
+	var oldGuilds = await database.get(`guildList`) || []
 	
 	oldGuilds.forEach(async oldID => {
 		if (newGuilds.indexOf(oldID) > -1) {
-			newGuilds.splice(newGuilds.indexOf(oldID))
+			newGuilds.splice(newGuilds.indexOf(oldID),1)
 		} else {
+			console.log(`No longer in guild ${oldID}, removing...`)
 			await removeGuild(oldID)
 		}
 	})
 	//all that's left are new guilds
-	newGuilds.forEach(guild => {guildList.push(guild.id)})
+	newGuilds.forEach(guild => {guildList.push(guild); console.log(`New guild: ${guild}`)})
 	await database.set('guildList', guildList)
-	console.log(guildList)
+
 }
 
 function guildlimitwarning(){
 	if (client.guilds.cache.size > 95) {
-			console.log(`Warning, bot is in ${client.guilds.size} servers!`)
+			console.log(`Warning, bot is in ${client.guilds.cache.size} servers!`)
 		}
 }
 

@@ -158,7 +158,7 @@ async function removeGuild(guildID) {
 	await database.delete(`${guildID}c`);
 	await database.delete(`${guildID}hauto`);
 	await database.delete(`${guildID}cauto`);
-	guildList.splice(guildID);
+	guildList.splice(guildList.indexOf(guildID),1);
 	await database.set('guildList', guildList)
 }
 

@@ -14,7 +14,7 @@ const database = new Keyv('sqlite://./database.sqlite');
 
 const MAXGUILDS = 1000;
 
-var guildList = await database.get("guildList", [])
+var guildList = []
 
 //maybe just make this "everythin gnot alphanumeric + space?"
 const specialchars = /(\\_|_|\*|\\\*|\^|\?)/g
@@ -150,22 +150,23 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 	}
 });
 
-client.on('guildDelete', removeGuild(guild));
+client.on('guildDelete', async guild => {removeGuild(guild.id)});
 async function removeGuild(guild) {
-	console.log("Now leaving guild: " + guild.id)	
+	console.log("Now leaving guild: " + guildID)	
 
-	await database.delete(`${guild.id}p`);
-	await database.delete(`${guild.id}c`);
-	await database.delete(`${guild.id}hauto`);
-	await database.delete(`${guild.id}cauto`);
+	await database.delete(`${guildID}p`);
+	await database.delete(`${guildID}c`);
+	await database.delete(`${guildID}hauto`);
+	await database.delete(`${guildID}cauto`);
 	//guildList.pop(guild.id);
 	//await database.set('guildList', guildList)
 }
 
-client.on('guildCreate', addGuild(guild));
+client.on('guildCreate', async guild => {addGuild(guild.id)});
 
-async function addGuild (guild) {
-	guildList.push(guild.id);
+async function addGuild (guildID) {
+	console.log(`adding guild ${guildID}`)
+	guildList.push(guildID);
 	await database.set('guildList', guildList)
 	//await database.set(`${guild.id}p`, GLOBALPREFIX);
 	//await database.set(`${guild.id}c`, "");
@@ -184,6 +185,7 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 
 
 async function refreshGuildsDatabase () {
+	guildList = await database.get("guildList") || []
 	//updates guilds for when the bot joined/was kicked while offline
 	//gets the last known list of guilds the bot was in (array parse)
 	//gets a list of guilds the bot is CURRENTLY in
@@ -192,10 +194,12 @@ async function refreshGuildsDatabase () {
 	//otherwise, remove it and its data from settings
 	//go through remaining list of guilds the bot is currently in, these are all new guilds
 	//add bot to guilds
-	console.log(typeof client.guilds)
-	var newGuilds = Array.from(client.guilds) // does this even work
-	var oldGuilds = await database.get("guildList",[])
-	oldGuilds.forEach(oldID => {
+	var newGuilds = client.guilds.cache.map(guild => guild.id)) // does this even work
+
+	console.log(newGuilds)
+	var oldGuilds = await database.get("guildList") || []
+	
+	oldGuilds.forEach(async oldID => {
 		if (newGuilds.indexOf(oldID) > -1) {
 			newGuilds.splice(newGuilds.indexOf(oldID))
 		} else {
@@ -205,10 +209,11 @@ async function refreshGuildsDatabase () {
 	//all that's left are new guilds
 	newGuilds.forEach(guild => {guildList.push(guild.id)})
 	await database.set('guildList', guildList)
+	console.log(guildList)
 }
 
 function guildlimitwarning(){
-	if (client.guilds.size > 95) {
+	if (client.guilds.cache.size > 95) {
 			console.log(`Warning, bot is in ${client.guilds.size} servers!`)
 		}
 }

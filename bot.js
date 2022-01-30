@@ -14,6 +14,8 @@ const database = new Keyv('sqlite://./database.sqlite');
 
 const MAXGUILDS = 1000;
 
+var guildList = await database.get("guildList", [])
+
 //maybe just make this "everythin gnot alphanumeric + space?"
 const specialchars = /(\\_|_|\*|\\\*|\^|\?)/g
 //this whole method seems inefficient
@@ -148,18 +150,70 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 	}
 });
 
-client.once( 'ready', () => {
+client.on('guildDelete', removeGuild(guild));
+async function removeGuild(guild) {
+	console.log("Now leaving guild: " + guild.id)	
+
+	await database.delete(`${guild.id}p`);
+	await database.delete(`${guild.id}c`);
+	await database.delete(`${guild.id}hauto`);
+	await database.delete(`${guild.id}cauto`);
+	//guildList.pop(guild.id);
+	//await database.set('guildList', guildList)
+}
+
+client.on('guildCreate', addGuild(guild));
+
+async function addGuild (guild) {
+	guildList.push(guild.id);
+	await database.set('guildList', guildList)
+	//await database.set(`${guild.id}p`, GLOBALPREFIX);
+	//await database.set(`${guild.id}c`, "");
+	//await database.set(`${guild.id}hauto`,1);
+	//await database.set(`${guild.id}cauto`,1);
+}
+client.once( 'ready', async () => {
 	console.log("poke hint solver bot ready");
 	console.log(`Currently serving ${client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)} trainers in ${client.guilds.cache.size} regions.\n
 Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
+	await refreshGuildsDatabase()
 	guildlimitwarning()
+
 });
 
+
+
+async function refreshGuildsDatabase () {
+	//updates guilds for when the bot joined/was kicked while offline
+	//gets the last known list of guilds the bot was in (array parse)
+	//gets a list of guilds the bot is CURRENTLY in
+	//first go through all guilds the bot was known to be in
+	//if the bot is in new guilds, then remove it from new guilds
+	//otherwise, remove it and its data from settings
+	//go through remaining list of guilds the bot is currently in, these are all new guilds
+	//add bot to guilds
+	console.log(typeof client.guilds)
+	var newGuilds = Array.from(client.guilds) // does this even work
+	var oldGuilds = await database.get("guildList",[])
+	oldGuilds.forEach(oldID => {
+		if (newGuilds.indexOf(oldID) > -1) {
+			newGuilds.splice(newGuilds.indexOf(oldID))
+		} else {
+			await removeGuild(oldID)
+		}
+	})
+	//all that's left are new guilds
+	newGuilds.forEach(guild => {guildList.push(guild.id)})
+	await database.set('guildList', guildList)
+}
+
 function guildlimitwarning(){
-	if (client.guilds.size > 100) {
+	if (client.guilds.size > 95) {
 			console.log(`Warning, bot is in ${client.guilds.size} servers!`)
 		}
 }
+
+
 
 //returns an array of strings that potentially match the hint provided
 function  check (texto,catchfix,chunk, spoiler) {

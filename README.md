@@ -64,6 +64,10 @@ Copy config-template.json into config.json
 
 Token: bot token.
 
+Run:
+```
+node bot.js
+```
 
 ## Contributing
 This bot is meant to be simple and lightweight, and its single purpose is to guess pokemon names.

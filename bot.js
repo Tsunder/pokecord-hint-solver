@@ -313,7 +313,7 @@ function sendMessage(channel,payload) {
 }
 
 function errorCatch(error) {
-		console.log('Error: ', error)
+		console.log('Error: '+ error)
 	}
 
 client.on('error', (error) => {

@@ -309,11 +309,15 @@ function isModerator(member) {
 }
 
 function sendMessage(channel,payload) {
-	channel.send(payload).catch(errorCatch)
+	channel.send(payload)
 }
 
 function errorCatch(error) {
-		console.error('Error: ', error)
+		console.log('Error: ', error)
 	}
+
+client.on('error', (error) => {
+	console.log("Error!!: " + error)
+})
 
 client.login(token)

@@ -1,0 +1,9 @@
+{
+  "name": "pokehint",
+  "version": "1.0.0",
+  "dependencies" : {
+    "discord.js" : "13.6.0",
+    "keyv" : "4.1.1",
+    "@keyv/sqlite" : "3.0.0"
+  }
+}

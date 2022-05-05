@@ -73,3 +73,7 @@ node bot.js
 This bot is meant to be simple and lightweight, and its single purpose is to guess pokemon names.
 
 Contributions should be clean and clear in what they do.
+
+## Terms of Service, Privacy Policy
+
+https://github.com/Tsunder/pokecord-hint-solver/blob/main/termsofservice.md

@@ -326,6 +326,7 @@
 			"kecleon",
 			"kingdra",
 			"kingler",
+			"kleavor",
 			"koffing",
 			"kommo-o",
 			"lampent",
@@ -458,6 +459,7 @@
 			"whismur",
 			"wingull",
 			"wurmple",
+			"wyrdeer",
 			"xerneas",
 			"yanmega",
 			"yungoos",
@@ -523,6 +525,7 @@
 			"dusknoir",
 			"eldegoss",
 			"empoleon",
+			"enamorus",
 			"fennekin",
 			"floatzel",
 			"fomantis",
@@ -599,6 +602,7 @@
 			"orbeetle",
 			"oricorio",
 			"oshawott",
+			"overqwil",
 			"parasect",
 			"pawniard",
 			"pelipper",
@@ -645,6 +649,7 @@
 			"slurpuff",
 			"smeargle",
 			"smoochum",
+			"sneasler",
 			"snubbull",
 			"solgaleo",
 			"spinarak",
@@ -668,6 +673,7 @@
 			"trumbeak",
 			"tsareena",
 			"unfezant",
+			"ursaluna",
 			"ursaring",
 			"vaporeon",
 			"venipede",
@@ -921,6 +927,7 @@
 		[
 			"10% zygarde",
 			"barraskewda",
+			"basculegion",
 			"blacephalon",
 			"centiskorch",
 			"corviknight",
@@ -945,6 +952,9 @@
 			"alolan vulpix",
 			"attack deoxys",
 			"autumn grotle",
+			"hisuian zorua",
+			"origin dialga",
+			"origin palkia",
 			"pa'u oricorio",
 			"shadow mewtwo"
 		],
@@ -959,6 +969,7 @@
 			"autumn leafeon",
 			"choco sinistea",
 			"defense deoxys",
+			"hisuian goodra",
 			"pumpkin togepi",
 			"rainy castform",
 			"sandy wormadam",
@@ -976,10 +987,16 @@
 			"alolan raticate",
 			"autumn torterra",
 			"blade aegislash",
+			"bouquet shaymin",
 			"galarian meowth",
 			"galarian ponyta",
 			"galarian yamask",
 			"galarian zapdos",
+			"hisuian avalugg",
+			"hisuian sliggoo",
+			"hisuian sneasel",
+			"hisuian voltorb",
+			"hisuian zoroark",
 			"snowman pikachu",
 			"winter sawsbuck"
 		],
@@ -993,13 +1010,19 @@
 			"crystal larvesta",
 			"devil jigglypuff",
 			"galarian corsola",
+			"hisuian arcanine",
+			"hisuian braviary",
+			"therian enamorus",
+			"hisuian qwilfish",
+			"hisuian samurott",
 			"primal glastrier",
 			"galarian linoone",
 			"galarian moltres",
 			"galarian slowbro",
 			"galarian weezing",
 			"pom-pom oricorio",
-			"spikey cyndaquil"
+			"spikey cyndaquil",
+			"sprouting oddish"
 		],
 		[
 			"galarian articuno",
@@ -1009,6 +1032,10 @@
 			"galarian slowking",
 			"galarian slowpoke",
 			"galarian stunfisk",
+			"hisuian decidueye",
+			"hisuian electrode",
+			"hisuian growlithe",
+			"hisuian lilligant",
 			"snowflake bronzor"
 		],
 		[
@@ -1017,19 +1044,25 @@
 		[
 			"candy corn cutiefly",
 			"galarian darmanitan",
-			"galarian farfetch'd"
+			"galarian farfetch'd",
+			"hisuian typhlosion"
 		],
 		[
+			"anniversary sunflora",
 			"elsa galarian ponyta",
-			"frankenstein psyduck"
+			"frankenstein psyduck",
+			"spring fever cubchoo"
 		],
 		[
 			"blue-striped basculin"
 		],
 		[
+			"eternal flower floette",
 			"ghost king blacephalon"
 		],
-		[],
+		[
+			"cherry blossom cottonee"
+		],
 		[],
 		[
 			"jack-o-lantern chandelure"

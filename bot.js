@@ -112,8 +112,9 @@ Source: <https://github.com/Tsunder/pokecord-hint-solver>`)
 			if(!isModerator(message.member)) {
 				return sendMessage(message.channel,`I'm sorry, ${message.author}. I'm afraid I can't do that.`)
 			}
-			await database.set(`${message.guild.id}c`, args[0]);
-			return sendMessage(message.channel,`Successfully set catchfix to \`${args[0]}\``);
+			let newCatchFix = args.join(" ")
+			await database.set(`${message.guild.id}c`, newCatchFix);
+			return sendMessage(message.channel,`Successfully set catchfix to \`${newCatchFix}\``);
 		}
 		return sendMessage(message.channel,`Catchfix is \`${await database.get(`${message.guild.id}c`) || "none"}\`\nUse \`${await database.get(`${message.guild.id}p`) || GLOBALPREFIX}catchfix NewCatchfix\` to set a new one.`);
 	} else if ( command === `togglehint`) {

@@ -1031,6 +1031,7 @@
 			"centiskorch",
 			"corviknight",
 			"corvisquire",
+			"dada zarude",
 			"dudunsparce",
 			"fezandipiti",
 			"fletchinder",
@@ -1050,12 +1051,14 @@
 		[
 			"alolan golem",
 			"autumn eevee",
+			"black kyurem",
 			"brambleghast",
 			"brute bonnet",
 			"crabominable",
 			"devil wooper",
 			"flutter mane",
 			"gouging fire",
+ 			"hero palafin",
 			"iron boulder",
 			"iron jugulis",
 			"iron valiant",
@@ -1068,7 +1071,10 @@
 			"speed deoxys",
 			"squawkabilly",
 			"surf pikachu",
-			"walking wake"
+			"walking wake",
+			"white kyurem",
+			"zygarde cell",
+			"zygarde core"
 		],
 		[
 			"alolan grimer",
@@ -1076,12 +1082,14 @@
 			"alolan raichu",
 			"alolan vulpix",
 			"attack deoxys",
-			"choco milcery",
 			"autumn grotle",
+			"choco milcery",
+			"dusk lycanroc",
 			"hisuian zorua",
 			"origin dialga",
 			"origin palkia",
 			"pa'u oricorio",
+			"partner eevee",
 			"polar stufful",
 			"ruined golurk",
 			"shadow mewtwo",
@@ -1095,12 +1103,14 @@
 			"alolan marowak",
 			"alolan persian",
 			"alolan rattata",
-			"autumn turtwig",
 			"autumn leafeon",
+			"autumn turtwig",
 			"choco sinistea",
+			"crowned zacian",
 			"defense deoxys",
 			"evil mightyena",
 			"floatie piplup",
+			"hangry morpeko",
 			"hisuian goodra",
 			"mushroom nacli",
 			"paldean tauros",
@@ -1116,7 +1126,9 @@
 			"snowy wormadam",
 			"sunny castform",
 			"trash wormadam",
-			"vampire raichu"
+			"ultra necrozma",
+			"vampire raichu",
+			"zen darmanitan"
 
 		],
 		[
@@ -1124,6 +1136,7 @@
 			"alolan raticate",
 			"autumn dachsbun",
 			"autumn torterra",
+			"blade aegislash",
 			"blade aegislash",
 			"blossom cherrim",
 			"bouquet shaymin",
@@ -1138,6 +1151,7 @@
 			"hisuian voltorb",
 			"hisuian zoroark",
 			"martini dratini",
+			"partner pikachu",
 			"pyjama minccino",
 			"snowball gastly",
 			"snowman pikachu",
@@ -1152,15 +1166,16 @@
 			"complete zygarde",
 			"crystal larvesta",
 			"devil jigglypuff",
+			"droopy tatsugiri",
 			"galarian corsola",
 			"galarian linoone",
 			"galarian moltres",
 			"galarian slowbro",
 			"galarian weezing",
+			"gigantamax eevee",
 			"grilling snorlax",
 			"hisuian arcanine",
 			"hisuian braviary",
-			"therian enamorus",
 			"hisuian qwilfish",
 			"hisuian samurott",
 			"lights pachirisu",
@@ -1168,10 +1183,13 @@
 			"pom-pom oricorio",
 			"primal glastrier",
 			"spikey cyndaquil",
-			"sprouting oddish"
+			"sprouting oddish",
+			"therian enamorus",
+			"zenith marshadow"
 		],
 		[
 			"aqua breed tauros",
+			"crowned zamazenta",
 			"galarian articuno",
 			"galarian darumaka",
 			"galarian mr. mime",
@@ -1179,29 +1197,60 @@
 			"galarian slowking",
 			"galarian slowpoke",
 			"galarian stunfisk",
+			"gigantamax gengar",
+			"gigantamax lapras",
+			"gigantamax meowth",
+			"gorging cramorant",
+			"gulping cramorant",
 			"harvesting ledian",
 			"hisuian decidueye",
 			"hisuian electrode",
 			"hisuian growlithe",
 			"hisuian lilligant",
+			"ice rider calyrex",
+			"midnight lycanroc",
 			"nibbling bunnelby",
+			"noice face eiscue",
+			"original magearna",
 			"pumpkin gothorita",
 			"reindeer deerling",
+			"school wishiwashi",
 			"sharkfin totodile",
 			"snowflake bronzor"
 		],
 		[
 			"blaze breed tauros",
 			"bloodmoon ursaluna",
+			"bloodmoon ursaluna",
+			"dusk mane necrozma",
 			"galarian zigzagoon",
+			"gigantamax drednaw",
+			"gigantamax flapple",
+			"gigantamax kingler",
+			"gigantamax machamp",
+			"gigantamax pikachu",
+			"gigantamax snorlax",
 			"hisuian typhlosion",
-			"ice present eiscue"
+			"ice present eiscue",
+			"low key toxtricity",
+			"pirouette meloetta",
+			"roaming gimmighoul",
+			"stretchy tatsugiri"
 		],
 		[
 			"candy corn cutiefly",
 			"combat breed tauros",
+			"dawn wings necrozma",
+			"eternamax eternatus",
 			"galarian darmanitan",
 			"galarian farfetch'd",
+			"gigantamax alcremie",
+			"gigantamax appletun",
+			"gigantamax garbodor",
+			"gigantamax inteleon",
+			"gigantamax melmetal",
+			"gigantamax orbeetle",
+			"gigantamax venusaur",
 			"ice princess kirlia",
 			"nutcrack sirfetch'd",
 			"overgrown carnivine",
@@ -1211,31 +1260,68 @@
 			"anniversary sunflora",
 			"elsa galarian ponyta",
 			"frankenstein psyduck",
+			"gigantamax blastoise",
+			"gigantamax charizard",
+			"gigantamax cinderace",
+			"gigantamax coalossal",
+			"gigantamax duraludon",
+			"gigantamax hatterene",
+			"gigantamax rillaboom",
+			"shadow rider calyrex",
 			"spring fever cubchoo"
 		],
 		[
 			"blue-striped basculin",
+			"gigantamax butterfree",
+			"gigantamax copperajah",
+			"gigantamax grimmsnarl",
+			"gigantamax sandaconda",
 			"pile of leaves swalot",
 			"pumpkaboo spice latte",
 			"snow leopard sneasler"
+
 		],
 		[
 			"christmas tree snorunt",
 			"eternal flower floette",
-			"ghost king blacephalon"
+			"ghost king blacephalon",
+			"gigantamax centiskorch",
+			"gigantamax corviknight",
+			"white-striped basculin"
 		],
 		[
-			"cherry blossom cottonee"
+			"cherry blossom cottonee",
+			"galarian zen darmanitan",
+			"wellspring mask ogerpon"
+		],
+		[
+			"cornerstone mask ogerpon",
+			"family of three maushold",
+			"hearthflame mask ogerpon"
+		],
+		[
+			"blue plumage squawkabilly",
+			"jack-o-lantern chandelure",
+			"three-segment dudunsparce"
 		],
 		[],
 		[
-			"jack-o-lantern chandelure"
+			"gigantamax amped toxtricity",
+			"yellow plumage squawkabilly"
 		],
-		[],
-		[],
 		[
 			"galarian darmanitan zen mode",
 			"sandshrew of the sarcophagus"
+		],
+		[
+			"gigantamax low key toxtricity"
+		],
+		[],
+		[
+			"gigantamax rapid strike urshifu"
+		],
+		[
+			"gigantamax single strike urshifu"
 		]
 	]
 }
